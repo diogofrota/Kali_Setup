@@ -488,12 +488,11 @@ Atualiza o sistema base.
 O que faz:
 
 - valida que está no Kali;
-- verifica conectividade de forma leve com DNS e preparação de URIs do APT;
-- executa `apt update`;
-- mostra pacotes atualizáveis;
-- pergunta antes de `apt full-upgrade`;
-- pergunta antes de `apt autoremove`;
-- executa `apt autoclean`;
+- executa `apt-get update`;
+- mostra apenas a quantidade de pacotes que precisam de atualização;
+- avisa se o plano precisar remover pacotes para resolver dependências;
+- pergunta uma vez antes de executar `apt-get dist-upgrade`;
+- executa `apt-get autoclean`;
 - roda `dpkg --audit`;
 - roda `apt-get check`;
 - avisa se `/var/run/reboot-required` existir;
@@ -1569,10 +1568,10 @@ Além das ferramentas de pentest, os scripts usam comandos administrativos do Li
 
 ### APT e pacotes
 
-- `apt update`: atualiza índices de pacote.
-- `apt full-upgrade`: aplica upgrade completo quando confirmado.
-- `apt autoremove`: remove dependências órfãs quando confirmado.
-- `apt autoclean`: limpa cache antigo.
+- `apt-get update`: atualiza índices de pacote.
+- `apt-get dist-upgrade`: aplica a atualização completa quando confirmada.
+- `apt-get autoremove`: remove dependências órfãs quando executado manualmente.
+- `apt-get autoclean`: limpa cache antigo.
 - `apt-cache show`: valida existência de pacote.
 - `dpkg-query`: verifica se pacote está instalado.
 - `dpkg --audit`: procura pacotes quebrados.

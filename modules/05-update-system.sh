@@ -20,18 +20,16 @@
 # 1. Confirma privilégios administrativos.
 # 2. Valida que o sistema é Kali Linux.
 # 3. Cria log privado no home do usuário real.
-# 4. Verifica resolução DNS e capacidade do APT de preparar URIs.
-# 5. Executa apt update.
-# 6. Lista pacotes atualizáveis.
-# 7. Pergunta antes de executar apt full-upgrade.
-# 8. Pergunta antes de executar apt autoremove.
-# 9. Executa apt autoclean, dpkg --audit e apt-get check.
+# 4. Atualiza os índices do APT.
+# 5. Simula a atualização e mostra apenas um resumo numérico.
+# 6. Pergunta antes de aplicar a atualização completa.
+# 7. Executa limpeza leve, dpkg --audit e apt-get check.
 #
 # RISCOS CONTROLADOS
 #
 # Atualizações podem alterar kernel, bibliotecas, serviços e ferramentas. Por
-# isso o módulo não executa full-upgrade nem autoremove sem confirmação do
-# operador e registra as ações em log privado.
+# isso o módulo não executa a atualização completa sem confirmação do operador
+# e registra as ações em log privado.
 ###############################################################################
 
 set -Eeuo pipefail
@@ -60,6 +58,8 @@ INCOMPATIBLE=0
 FAILED=0
 LOG_FILE=''
 REAL_USER=''
+UPGRADE_ACTIONS=0
+REMOVE_ACTIONS=0
 
 print_banner() {
     printf '\n'
@@ -78,72 +78,62 @@ log_line() {
     fi
 }
 
-check_connectivity() {
-    info "Verificando conectividade sem depender apenas de ping..."
+summarize_upgrade_plan() {
+    local simulation=''
 
-    if getent hosts kali.org >/dev/null 2>&1; then
-        success "Resolução DNS funcional."
-        log_line 'DNS para kali.org resolvido.'
+    info "Verificando quantos pacotes precisam ser atualizados..."
+    simulation="$(apt-get --simulate -o Debug::NoLocking=1 dist-upgrade)"
+
+    UPGRADE_ACTIONS="$(
+        awk '/^Inst / { total++ } END { print total + 0 }' <<< "$simulation"
+    )"
+    REMOVE_ACTIONS="$(
+        awk '/^Remv / { total++ } END { print total + 0 }' <<< "$simulation"
+    )"
+
+    if [[ "$UPGRADE_ACTIONS" -eq 0 && "$REMOVE_ACTIONS" -eq 0 ]]; then
+        success "O Kali já está atualizado."
     else
-        warning "DNS para kali.org falhou; apt ainda pode funcionar por cache ou mirror local."
-        SKIPPED=$((SKIPPED + 1))
-        log_line 'DNS para kali.org falhou.'
+        info "Pacotes para instalar ou atualizar: ${UPGRADE_ACTIONS}."
+        if [[ "$REMOVE_ACTIONS" -gt 0 ]]; then
+            warning "A atualização precisa remover ${REMOVE_ACTIONS} pacote(s) para resolver dependências."
+        fi
     fi
 
-    if apt-get update --print-uris >/dev/null 2>&1; then
-        success "APT consegue preparar lista de URIs."
-        log_line 'apt-get update --print-uris executado com sucesso.'
-    else
-        warning "APT não conseguiu preparar URIs; verifique rede e sources.list."
-        log_line 'apt-get update --print-uris falhou.'
-    fi
-}
-
-show_upgradable_packages() {
-    info "Listando pacotes atualizáveis..."
-    apt list --upgradable
+    log_line "Plano: ${UPGRADE_ACTIONS} instalação(ões)/atualização(ões), ${REMOVE_ACTIONS} remoção(ões)."
 }
 
 main() {
     print_banner
     require_root
-    require_commands apt apt-get dpkg getent grep date uname
+    require_commands apt-get awk dpkg getent grep date uname
     detect_kali
 
     REAL_USER="$(get_real_user)"
     LOG_FILE="$(start_log "$REAL_USER" "$MODULE_NAME")"
     log_line 'Início do módulo de atualização.'
 
-    check_connectivity
-
-    info "Executando apt update..."
-    apt update
+    info "Atualizando os índices do APT..."
+    apt-get update
     UPDATED=$((UPDATED + 1))
-    log_line 'apt update concluído.'
+    log_line 'apt-get update concluído.'
 
-    show_upgradable_packages
+    summarize_upgrade_plan
 
-    if confirm_action 'Executar apt full-upgrade agora?'; then
-        apt full-upgrade
+    if [[ "$UPGRADE_ACTIONS" -eq 0 && "$REMOVE_ACTIONS" -eq 0 ]]; then
+        :
+    elif confirm_action 'Aplicar agora a atualização completa do Kali?'; then
+        apt-get --assume-yes dist-upgrade
         UPDATED=$((UPDATED + 1))
-        log_line 'apt full-upgrade concluído.'
+        log_line 'apt-get dist-upgrade concluído.'
     else
-        warning "full-upgrade ignorado por escolha do usuário."
+        warning "Atualização completa ignorada por escolha do usuário."
         SKIPPED=$((SKIPPED + 1))
-        log_line 'full-upgrade ignorado.'
+        log_line 'apt-get dist-upgrade ignorado.'
     fi
 
-    if confirm_action 'Executar apt autoremove controlado agora?'; then
-        apt autoremove
-        UPDATED=$((UPDATED + 1))
-        log_line 'apt autoremove concluído.'
-    else
-        warning "autoremove ignorado por escolha do usuário."
-        SKIPPED=$((SKIPPED + 1))
-    fi
-
-    apt autoclean
-    log_line 'apt autoclean concluído.'
+    apt-get autoclean
+    log_line 'apt-get autoclean concluído.'
 
     dpkg --audit
     apt-get check
