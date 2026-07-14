@@ -18,7 +18,7 @@
 #
 # 1. Confirma privilégios administrativos.
 # 2. Valida que o sistema é Kali Linux.
-# 3. Cria ~/.cargo/bin com dono e permissões corretas.
+# 3. Cria ~/.cargo e ~/.cargo/bin com dono e permissões corretas.
 # 4. Instala cargo e rustc via APT quando disponíveis.
 # 5. Pergunta antes de instalar ferramentas Rust opcionais.
 # 6. Mantém ferramentas não validadas fora do fluxo automático.
@@ -83,14 +83,18 @@ install_rust_runtime() {
 maybe_install_rust_tool() {
     local pacote="$1"
     local comando="$2"
+    local caminho_binario="${REAL_HOME}/.cargo/bin/${comando}"
 
-    if command_exists "$comando"; then
+    if [[ -x "$caminho_binario" ]] || command_exists "$comando"; then
         EXISTING=$((EXISTING + 1))
         return 0
     fi
 
     if confirm_action "Instalar ferramenta Rust opcional ${pacote} via cargo?"; then
-        run_as_real_user "$REAL_USER" cargo install "$pacote"
+        run_as_real_user "$REAL_USER" env \
+            HOME="$REAL_HOME" \
+            CARGO_HOME="${REAL_HOME}/.cargo" \
+            cargo install "$pacote"
         INSTALLED=$((INSTALLED + 1))
     else
         SKIPPED=$((SKIPPED + 1))
@@ -100,12 +104,14 @@ maybe_install_rust_tool() {
 main() {
     print_banner
     require_root
-    require_commands apt-get apt-cache dpkg-query getent sudo mkdir
+    require_commands apt-get apt-cache dpkg-query getent sudo mkdir chmod chown env
     detect_kali
     REAL_USER="$(get_real_user)"
     REAL_HOME="$(get_user_home "$REAL_USER")"
     LOG_FILE="$(start_log "$REAL_USER" "$MODULE_NAME")"
 
+    # Evita que mkdir -p crie ~/.cargo como root quando o módulo usa sudo.
+    ensure_directory "${REAL_HOME}/.cargo" '700' "$REAL_USER" "$REAL_USER"
     ensure_directory "${REAL_HOME}/.cargo/bin" '700' "$REAL_USER" "$REAL_USER"
     install_rust_runtime
 

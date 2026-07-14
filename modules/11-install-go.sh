@@ -19,11 +19,11 @@
 #
 # 1. Confirma privilégios administrativos.
 # 2. Valida que o sistema é Kali Linux.
-# 3. Cria ~/go/bin com dono e permissões corretas.
+# 3. Cria ~/go e ~/go/bin com dono e permissões corretas.
 # 4. Instala golang-go via APT quando Go ainda não existe.
 # 5. Lê config/tools-go.txt.
-# 6. Instala ferramentas CORE e RECOMMENDED com go install.
-# 7. Pergunta antes de ferramentas OPTIONAL.
+# 6. Instala automaticamente todas as ferramentas via Go ou APT.
+# 7. Mostra no final o que foi instalado e quais itens falharam.
 #
 # RISCOS CONTROLADOS
 #
@@ -55,6 +55,8 @@ INSTALLED=0
 EXISTING=0
 SKIPPED=0
 FAILED=0
+declare -a INSTALLED_ITEMS=()
+declare -a FAILED_ITEMS=()
 LOG_FILE=''
 REAL_USER=''
 REAL_HOME=''
@@ -68,6 +70,46 @@ print_banner() {
         '============================================================'
 }
 
+record_installed() {
+    local item="$1"
+
+    INSTALLED=$((INSTALLED + 1))
+    INSTALLED_ITEMS+=("$item")
+    success "Instalado: ${item}"
+}
+
+record_failure() {
+    local item="$1"
+
+    FAILED=$((FAILED + 1))
+    FAILED_ITEMS+=("$item")
+    error "Falha ao instalar ${item}. O módulo continuará com os próximos itens."
+}
+
+print_result_list() {
+    local titulo="$1"
+    local item=''
+
+    shift
+    printf '\n%s\n' "$titulo"
+
+    if [[ "$#" -eq 0 ]]; then
+        printf '  - Nenhum.\n'
+        return 0
+    fi
+
+    for item in "$@"; do
+        printf '  - %s\n' "$item"
+    done
+}
+
+prepare_go_workspace() {
+    # mkdir -p executado como root pode criar o diretório pai com dono errado.
+    # Preparar cada nível separadamente também repara instalações parciais.
+    ensure_directory "${REAL_HOME}/go" '700' "$REAL_USER" "$REAL_USER"
+    ensure_directory "${REAL_HOME}/go/bin" '700' "$REAL_USER" "$REAL_USER"
+}
+
 ensure_go_runtime() {
     if command_exists go; then
         success "Go já está instalado."
@@ -76,10 +118,13 @@ ensure_go_runtime() {
     fi
 
     if apt_package_exists golang-go; then
-        apt-get install -y -- golang-go
-        INSTALLED=$((INSTALLED + 1))
+        if apt-get install -y -- golang-go; then
+            record_installed 'golang-go (APT/runtime)'
+        else
+            record_failure 'golang-go (APT/runtime)'
+        fi
     else
-        die "Pacote golang-go não encontrado no apt."
+        record_failure 'golang-go (pacote APT ausente)'
     fi
 }
 
@@ -98,23 +143,63 @@ install_go_tool() {
     fi
 
     case "$prioridade" in
-        CORE|RECOMMENDED)
-            info "Instalando ${nome} com go install a partir de ${origem}"
-            run_as_real_user "$REAL_USER" env GOPATH="${REAL_HOME}/go" GOBIN="${REAL_HOME}/go/bin" go install "$origem"
-            INSTALLED=$((INSTALLED + 1))
-            ;;
-        OPTIONAL)
-            if confirm_action "Instalar ferramenta Go opcional ${nome}?"; then
-                run_as_real_user "$REAL_USER" env GOPATH="${REAL_HOME}/go" GOBIN="${REAL_HOME}/go/bin" go install "$origem"
-                INSTALLED=$((INSTALLED + 1))
-            else
-                SKIPPED=$((SKIPPED + 1))
-            fi
+        CORE|RECOMMENDED|OPTIONAL)
             ;;
         *)
+            warning "Prioridade desconhecida para ${nome}: ${prioridade}. Item ignorado."
             SKIPPED=$((SKIPPED + 1))
+            return 0
             ;;
     esac
+
+    if ! command_exists go; then
+        record_failure "${nome} (runtime Go ausente)"
+        return 0
+    fi
+
+    info "Instalando ${nome} com go install a partir de ${origem}"
+    if run_as_real_user "$REAL_USER" env \
+        HOME="$REAL_HOME" \
+        GOPATH="${REAL_HOME}/go" \
+        GOBIN="${REAL_HOME}/go/bin" \
+        go install "$origem"; then
+        if [[ -x "$caminho_binario" ]]; then
+            record_installed "${nome} (Go: ${origem})"
+        else
+            record_failure "${nome} (go install não criou ${caminho_binario})"
+        fi
+    else
+        record_failure "${nome} (Go: ${origem})"
+    fi
+}
+
+install_apt_tool() {
+    local nome="$1"
+    local prioridade="$2"
+    local pacote="$3"
+
+    case "$prioridade" in
+        CORE|RECOMMENDED|OPTIONAL)
+            ;;
+        *)
+            warning "Prioridade desconhecida para ${nome}: ${prioridade}. Item ignorado."
+            SKIPPED=$((SKIPPED + 1))
+            return 0
+            ;;
+    esac
+
+    if apt_package_installed "$pacote"; then
+        EXISTING=$((EXISTING + 1))
+        success "Pacote já instalado: ${pacote}"
+    elif apt_package_exists "$pacote"; then
+        if apt-get install -y -- "$pacote"; then
+            record_installed "${nome} (APT: ${pacote})"
+        else
+            record_failure "${nome} (APT: ${pacote})"
+        fi
+    else
+        record_failure "${nome} (pacote APT ausente: ${pacote})"
+    fi
 }
 
 process_go_inventory() {
@@ -138,23 +223,33 @@ process_go_inventory() {
 
         IFS='|' read -r nome categoria prioridade metodo origem validacao arquitetura <<< "$linha"
 
-        if [[ "$metodo" == 'go' ]]; then
-            install_go_tool "$nome" "$prioridade" "$origem" "$validacao"
-        fi
+        case "$metodo" in
+            go)
+                install_go_tool "$nome" "$prioridade" "$origem" "$validacao"
+                ;;
+            apt)
+                install_apt_tool "$nome" "$prioridade" "$origem"
+                ;;
+            *)
+                warning "Método desconhecido para ${nome}: ${metodo}. Item ignorado."
+                SKIPPED=$((SKIPPED + 1))
+                ;;
+        esac
     done 9< "$CONFIG_FILE"
 }
 
 main() {
     print_banner
     require_root
-    require_commands apt-get apt-cache dpkg-query getent sudo mkdir
+    require_commands apt-get apt-cache dpkg-query getent sudo mkdir chmod chown env
     detect_kali
     ARCHITECTURE="$(detect_architecture)"
     REAL_USER="$(get_real_user)"
     REAL_HOME="$(get_user_home "$REAL_USER")"
     LOG_FILE="$(start_log "$REAL_USER" "$MODULE_NAME")"
 
-    ensure_directory "${REAL_HOME}/go/bin" '700' "$REAL_USER" "$REAL_USER"
+    validate_regular_file "$CONFIG_FILE"
+    prepare_go_workspace
     ensure_go_runtime
     process_go_inventory
 
@@ -165,8 +260,21 @@ main() {
     print_summary_line 'Incompatíveis' '0'
     print_summary_line 'Falhas' "$FAILED"
     print_summary_line 'Log' "$LOG_FILE"
-    print_summary_line 'Status' "OK (${ARCHITECTURE})"
+    if [[ "$FAILED" -eq 0 ]]; then
+        print_summary_line 'Status' "OK (${ARCHITECTURE})"
+    else
+        print_summary_line 'Status' "PARCIAL (${ARCHITECTURE})"
+    fi
     print_summary_line 'Próximo módulo' "$NEXT_MODULE"
+
+    if [[ "${#INSTALLED_ITEMS[@]}" -gt 0 ]]; then
+        print_result_list 'Instalado nesta execução:' "${INSTALLED_ITEMS[@]}"
+    else
+        print_result_list 'Instalado nesta execução:'
+    fi
+    if [[ "$FAILED" -gt 0 ]]; then
+        print_result_list 'Não foi possível instalar:' "${FAILED_ITEMS[@]}"
+    fi
 }
 
 main "$@"

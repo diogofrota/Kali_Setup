@@ -620,12 +620,13 @@ Instala runtime Python e ferramentas Python.
 O que faz:
 
 - instala `python3`, `python3-venv`, `python3-dev` e `pipx`;
+- prepara `~/.local/bin` com proprietário e permissões corretos;
 - cria `~/.virtualenvs` com permissão restritiva;
 - executa `pipx ensurepath`;
 - processa `config/tools-python.txt`;
-- instala ferramentas via APT quando o método é `apt`;
-- instala ferramentas via `pipx` quando o método é `pipx`;
-- pergunta antes de ferramentas `OPTIONAL`;
+- instala automaticamente todas as ferramentas via APT ou `pipx`, inclusive as marcadas como `OPTIONAL`;
+- continua com os próximos itens quando uma instalação individual falha;
+- mostra no final as ferramentas instaladas nesta execução e eventuais falhas;
 - evita `sudo pip install`;
 - evita instalar pacotes Python globalmente no Python do sistema.
 
@@ -655,11 +656,13 @@ Instala Go e ferramentas escritas em Go.
 O que faz:
 
 - valida Kali;
-- cria `~/go/bin`;
+- cria e repara as permissões de `~/go` e `~/go/bin`;
 - instala `golang-go` via APT se `go` não existir;
 - processa `config/tools-go.txt`;
-- instala ferramentas `CORE` e `RECOMMENDED` com `go install`;
-- pergunta antes de ferramentas `OPTIONAL`;
+- instala automaticamente todas as ferramentas `CORE`, `RECOMMENDED` e `OPTIONAL`;
+- instala também os itens do inventário cujo método é APT;
+- continua com os próximos itens quando uma instalação individual falha;
+- mostra no final as ferramentas instaladas nesta execução e eventuais falhas;
 - define `GOPATH` e `GOBIN` para instalar no home do usuário;
 - executa instalação como usuário real, não como root.
 - valida ferramentas Go pelo binário esperado em `~/go/bin`, evitando confundir o `httpx` do ProjectDiscovery com outro comando de mesmo nome no sistema.
@@ -1501,7 +1504,7 @@ Campos:
 
 - `nome`: nome amigável da ferramenta.
 - `categoria`: área de uso, como `dns`, `http`, `network`, `cloud`, `urls`.
-- `prioridade`: define se instala automaticamente, pergunta ou ignora.
+- `prioridade`: classifica a importância; cada módulo define o comportamento.
 - `método`: forma de instalação ou tratamento.
 - `pacote-ou-origem`: pacote APT, módulo Go, pacote pipx ou URL.
 - `comando-validacao`: comando usado para detectar se a ferramenta existe.
@@ -1511,7 +1514,7 @@ Prioridades:
 
 - `CORE`: ferramenta essencial instalada pelo módulo responsável.
 - `RECOMMENDED`: ferramenta recomendada para workstation profissional.
-- `OPTIONAL`: ferramenta útil, mas exige confirmação.
+- `OPTIONAL`: ferramenta útil; os módulos `10` e `11` instalam automaticamente, enquanto módulos interativos como o `15` pedem confirmação.
 - `LEGACY`: documentada, mas não instalada.
 - `UNSUPPORTED`: recusada até nova validação.
 

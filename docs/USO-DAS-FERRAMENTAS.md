@@ -30,7 +30,7 @@ Prioridades usadas pelos inventários:
 
 - `CORE`: ferramenta essencial instalada pelo módulo responsável.
 - `RECOMMENDED`: ferramenta recomendada para uma workstation profissional.
-- `OPTIONAL`: ferramenta útil, mas deve pedir confirmação.
+- `OPTIONAL`: ferramenta útil; os módulos 10 e 11 instalam automaticamente e módulos interativos, como o 15, pedem confirmação.
 - `LEGACY`: documentada, mas não instalada.
 - `UNSUPPORTED`: recusada até nova validação.
 

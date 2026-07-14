@@ -10,7 +10,7 @@ Prioridades:
 
 - CORE: instalado por padrão pelo módulo responsável.
 - RECOMMENDED: instalado por padrão, com foco em workstation profissional.
-- OPTIONAL: pede confirmação.
+- OPTIONAL: os módulos 10 e 11 instalam automaticamente; módulos interativos, como o 15, pedem confirmação.
 - LEGACY: documentado, mas não instalado.
 - UNSUPPORTED: recusado até nova validação.
 
