@@ -79,12 +79,12 @@ install_network_package() {
     if apt_package_exists "$pacote"; then
         case "$prioridade" in
             CORE|RECOMMENDED)
-                apt install "$pacote"
+                apt-get install -y -- "$pacote"
                 INSTALLED=$((INSTALLED + 1))
                 ;;
             OPTIONAL)
                 if confirm_action "Instalar ferramenta opcional ${pacote}?"; then
-                    apt install "$pacote"
+                    apt-get install -y -- "$pacote"
                     INSTALLED=$((INSTALLED + 1))
                 else
                     SKIPPED=$((SKIPPED + 1))
@@ -151,7 +151,7 @@ configure_wireshark_capture() {
 main() {
     print_banner
     require_root
-    require_commands apt apt-cache dpkg-query dpkg-reconfigure getent
+    require_commands apt-get apt-cache dpkg-query dpkg-reconfigure getent
     detect_kali
     REAL_USER="$(get_real_user)"
     LOG_FILE="$(start_log "$REAL_USER" "$MODULE_NAME")"

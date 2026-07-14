@@ -74,7 +74,7 @@ install_python_runtime() {
             EXISTING=$((EXISTING + 1))
         else
             if apt_package_exists "$pacote"; then
-                apt install "$pacote"
+                apt-get install -y -- "$pacote"
                 INSTALLED=$((INSTALLED + 1))
             else
                 warning "Pacote não encontrado: ${pacote}"
@@ -119,7 +119,7 @@ process_python_tools() {
                 EXISTING=$((EXISTING + 1))
             else
                 if apt_package_exists "$origem"; then
-                    apt install "$origem"
+                    apt-get install -y -- "$origem"
                     INSTALLED=$((INSTALLED + 1))
                 else
                     warning "Pacote Python via apt ausente: ${origem}"
@@ -143,7 +143,7 @@ process_python_tools() {
 main() {
     print_banner
     require_root
-    require_commands apt apt-cache dpkg-query getent sudo mkdir
+    require_commands apt-get apt-cache dpkg-query getent sudo mkdir
     detect_kali
     REAL_USER="$(get_real_user)"
     REAL_HOME="$(get_user_home "$REAL_USER")"

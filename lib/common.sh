@@ -360,7 +360,7 @@ install_apt_packages() {
     local pacote=''
 
     require_root
-    require_commands apt apt-cache dpkg-query
+    require_commands apt-get apt-cache dpkg-query
 
     for pacote in "$@"; do
         if apt_package_installed "$pacote"; then
@@ -368,7 +368,7 @@ install_apt_packages() {
         else
             if apt_package_exists "$pacote"; then
                 info "Instalando pacote por apt: ${pacote}"
-                apt install "$pacote"
+                apt-get install -y -- "$pacote"
             else
                 warning "Pacote não encontrado no apt: ${pacote}"
             fi

@@ -72,7 +72,7 @@ install_rust_runtime() {
     fi
 
     if apt_package_exists cargo; then
-        apt install cargo rustc
+        apt-get install -y -- cargo rustc
         INSTALLED=$((INSTALLED + 1))
     else
         warning "Pacote cargo não encontrado. rustup remoto não será executado automaticamente."
@@ -100,7 +100,7 @@ maybe_install_rust_tool() {
 main() {
     print_banner
     require_root
-    require_commands apt apt-cache dpkg-query getent sudo mkdir
+    require_commands apt-get apt-cache dpkg-query getent sudo mkdir
     detect_kali
     REAL_USER="$(get_real_user)"
     REAL_HOME="$(get_user_home "$REAL_USER")"

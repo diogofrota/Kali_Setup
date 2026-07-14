@@ -81,12 +81,12 @@ install_package() {
         case "$prioridade" in
             CORE|RECOMMENDED)
                 info "Instalando pacote ${prioridade}: ${pacote}"
-                apt install "$pacote"
+                apt-get install -y -- "$pacote"
                 INSTALLED=$((INSTALLED + 1))
                 ;;
             OPTIONAL)
                 if confirm_action "Instalar pacote opcional ${pacote}?"; then
-                    apt install "$pacote"
+                    apt-get install -y -- "$pacote"
                     INSTALLED=$((INSTALLED + 1))
                 else
                     SKIPPED=$((SKIPPED + 1))
@@ -140,7 +140,7 @@ process_inventory() {
 main() {
     print_banner
     require_root
-    require_commands apt apt-cache dpkg-query date uname
+    require_commands apt-get apt-cache dpkg-query date uname
     detect_kali
     REAL_USER="$(get_real_user)"
     LOG_FILE="$(start_log "$REAL_USER" "$MODULE_NAME")"

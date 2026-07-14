@@ -76,7 +76,7 @@ ensure_go_runtime() {
     fi
 
     if apt_package_exists golang-go; then
-        apt install golang-go
+        apt-get install -y -- golang-go
         INSTALLED=$((INSTALLED + 1))
     else
         die "Pacote golang-go não encontrado no apt."
@@ -147,7 +147,7 @@ process_go_inventory() {
 main() {
     print_banner
     require_root
-    require_commands apt apt-cache dpkg-query getent sudo mkdir
+    require_commands apt-get apt-cache dpkg-query getent sudo mkdir
     detect_kali
     ARCHITECTURE="$(detect_architecture)"
     REAL_USER="$(get_real_user)"

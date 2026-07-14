@@ -71,7 +71,7 @@ install_docker_package() {
         EXISTING=$((EXISTING + 1))
     else
         if apt_package_exists docker.io; then
-            apt install docker.io
+            apt-get install -y -- docker.io
             INSTALLED=$((INSTALLED + 1))
         else
             die "docker.io não encontrado. Não instale o pacote docker por engano."
@@ -84,7 +84,7 @@ install_compose() {
         if apt_package_installed docker-compose-plugin; then
             EXISTING=$((EXISTING + 1))
         else
-            apt install docker-compose-plugin
+            apt-get install -y -- docker-compose-plugin
             INSTALLED=$((INSTALLED + 1))
         fi
         return 0
@@ -94,7 +94,7 @@ install_compose() {
         if apt_package_installed docker-compose; then
             EXISTING=$((EXISTING + 1))
         else
-            apt install docker-compose
+            apt-get install -y -- docker-compose
             INSTALLED=$((INSTALLED + 1))
         fi
     else
@@ -106,7 +106,7 @@ install_compose() {
 main() {
     print_banner
     require_root
-    require_commands apt apt-cache dpkg-query systemctl usermod getent
+    require_commands apt-get apt-cache dpkg-query systemctl usermod getent
     detect_kali
     REAL_USER="$(get_real_user)"
     LOG_FILE="$(start_log "$REAL_USER" "$MODULE_NAME")"

@@ -510,6 +510,7 @@ O que faz:
 - lê o inventário linha por linha;
 - instala pacotes `CORE` e `RECOMMENDED`;
 - pergunta antes de pacotes `OPTIONAL`;
+- confirma automaticamente a etapa do APT após a política do inventário autorizar a instalação;
 - ignora linhas inválidas;
 - não instala metapacotes grandes como `kali-linux-everything`.
 

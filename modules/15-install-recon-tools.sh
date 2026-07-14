@@ -96,7 +96,7 @@ install_apt_tool() {
         EXISTING=$((EXISTING + 1))
     else
         if apt_package_exists "$pacote"; then
-            apt install "$pacote"
+            apt-get install -y -- "$pacote"
             INSTALLED=$((INSTALLED + 1))
         else
             warning "Pacote ausente: ${pacote}"
@@ -196,7 +196,7 @@ process_file() {
 main() {
     print_banner
     require_root
-    require_commands apt apt-cache dpkg-query getent sudo
+    require_commands apt-get apt-cache dpkg-query getent sudo
     detect_kali
     REAL_USER="$(get_real_user)"
     REAL_HOME="$(get_user_home "$REAL_USER")"
