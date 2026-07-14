@@ -105,6 +105,51 @@ kali-setup/
 
 ## Como usar
 
+### Baixar o projeto
+
+O instalador depende das pastas `modules/`, `lib/`, `scripts/` e `config/`.
+Por isso, baixe o repositório completo em vez de baixar somente o arquivo
+`install.sh`.
+
+#### Opção 1: Git (recomendada)
+
+Essa opção facilita as atualizações futuras com `git pull`:
+
+```bash
+sudo apt update
+sudo apt install -y git
+git clone https://github.com/diogofrota/Kali_Setup.git ~/kali-setup
+```
+
+Para atualizar uma cópia baixada com Git:
+
+```bash
+cd ~/kali-setup
+git pull --ff-only
+```
+
+#### Opção 2: wget
+
+Use esta opção quando quiser baixar um pacote completo do estado atual da
+branch `main`, sem manter o histórico Git:
+
+```bash
+sudo apt update
+sudo apt install -y wget ca-certificates tar
+mkdir -p ~/kali-setup
+wget --https-only \
+  -O /tmp/kali-setup-main.tar.gz \
+  https://github.com/diogofrota/Kali_Setup/archive/refs/heads/main.tar.gz
+tar -xzf /tmp/kali-setup-main.tar.gz \
+  -C ~/kali-setup \
+  --strip-components=1
+```
+
+O download via `wget` é uma cópia sem metadados Git. Para receber uma versão
+mais recente, baixe e extraia novamente o pacote completo.
+
+### Validar e executar
+
 Entre no diretório do projeto:
 
 ```bash
