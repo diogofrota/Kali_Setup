@@ -368,7 +368,8 @@ Principais funções:
 - `ensure_directory`: cria diretório com modo e dono corretos.
 - `print_summary_line`: imprime resumo alinhado.
 - `detect_architecture`: usa `uname -m`.
-- `detect_kali`: valida `/etc/os-release` e recusa sistemas que não sejam Kali.
+- `detect_kali`: lê `/etc/os-release`, aceita o link padrão para
+  `/usr/lib/os-release` e recusa sistemas que não sejam Kali.
 - `command_exists`: verifica se um binário está no `PATH`.
 - `apt_package_exists`: consulta existência de pacote no APT.
 - `apt_package_installed`: consulta instalação via `dpkg-query`.

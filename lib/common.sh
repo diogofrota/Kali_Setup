@@ -195,7 +195,7 @@ validate_not_symlink() {
 validate_regular_file() {
     local caminho="$1"
 
-    validate_not_symlink "$caminho"
+    validate_not_symlink "$caminho" || return 1
 
     if [[ -f "$caminho" ]]; then
         return 0
@@ -298,16 +298,44 @@ detect_architecture() {
     uname -m
 }
 
-detect_kali() {
-    local os_release='/etc/os-release'
+detect_kali_from_file() {
+    local os_release="$1"
 
-    validate_regular_file "$os_release"
+    # Esta validação é somente de leitura. Diferentemente de caminhos que o
+    # projeto pode modificar, os-release pode ser um link simbólico legítimo.
+    if [[ ! -f "$os_release" ]]; then
+        die "Arquivo os-release regular não encontrado: ${os_release}"
+        return 1
+    fi
 
-    if grep -q '^ID=kali$' "$os_release"; then
+    if [[ ! -r "$os_release" ]]; then
+        die "Arquivo os-release não está legível: ${os_release}"
+        return 1
+    fi
+
+    if grep -q \
+        -e '^ID=kali$' \
+        -e '^ID="kali"$' \
+        -e "^ID='kali'$" \
+        "$os_release"; then
         return 0
     fi
 
     die "Sistema recusado: este módulo foi desenhado para Kali Linux."
+}
+
+detect_kali() {
+    local os_release='/etc/os-release'
+
+    # O padrão os-release dá prioridade a /etc/os-release e permite que ele
+    # seja um link para o arquivo fornecido pelo sistema em /usr/lib.
+    # Um link quebrado em /etc deve falhar em vez de ocultar o problema usando
+    # silenciosamente o fallback.
+    if [[ ! -e "$os_release" && ! -L "$os_release" ]]; then
+        os_release='/usr/lib/os-release'
+    fi
+
+    detect_kali_from_file "$os_release"
 }
 
 command_exists() {
