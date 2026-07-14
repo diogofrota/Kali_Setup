@@ -490,8 +490,8 @@ O que faz:
 - valida que está no Kali;
 - executa `apt-get update`;
 - mostra apenas a quantidade de pacotes que precisam de atualização;
-- avisa se o plano precisar remover pacotes para resolver dependências;
-- pergunta uma vez antes de executar `apt-get dist-upgrade`;
+- mostra os nomes dos pacotes que o plano precisa remover;
+- mantém a confirmação nativa do APT antes de executar `apt-get dist-upgrade`;
 - executa `apt-get autoclean`;
 - roda `dpkg --audit`;
 - roda `apt-get check`;

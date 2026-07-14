@@ -21,15 +21,15 @@
 # 2. Valida que o sistema é Kali Linux.
 # 3. Cria log privado no home do usuário real.
 # 4. Atualiza os índices do APT.
-# 5. Simula a atualização e mostra apenas um resumo numérico.
-# 6. Pergunta antes de aplicar a atualização completa.
+# 5. Simula a atualização, resume as ações e mostra possíveis remoções.
+# 6. Deixa o próprio APT exibir o plano e pedir a confirmação final.
 # 7. Executa limpeza leve, dpkg --audit e apt-get check.
 #
 # RISCOS CONTROLADOS
 #
 # Atualizações podem alterar kernel, bibliotecas, serviços e ferramentas. Por
-# isso o módulo não executa a atualização completa sem confirmação do operador
-# e registra as ações em log privado.
+# isso o módulo mostra previamente as remoções e não desativa a confirmação
+# nativa do APT. Todas as ações são registradas em log privado.
 ###############################################################################
 
 set -Eeuo pipefail
@@ -60,6 +60,7 @@ LOG_FILE=''
 REAL_USER=''
 UPGRADE_ACTIONS=0
 REMOVE_ACTIONS=0
+REMOVAL_PACKAGES=''
 
 print_banner() {
     printf '\n'
@@ -80,6 +81,7 @@ log_line() {
 
 summarize_upgrade_plan() {
     local simulation=''
+    local package_name=''
 
     info "Verificando quantos pacotes precisam ser atualizados..."
     simulation="$(apt-get --simulate -o Debug::NoLocking=1 dist-upgrade)"
@@ -90,6 +92,9 @@ summarize_upgrade_plan() {
     REMOVE_ACTIONS="$(
         awk '/^Remv / { total++ } END { print total + 0 }' <<< "$simulation"
     )"
+    REMOVAL_PACKAGES="$(
+        awk '/^Remv / { print $2 }' <<< "$simulation"
+    )"
 
     if [[ "$UPGRADE_ACTIONS" -eq 0 && "$REMOVE_ACTIONS" -eq 0 ]]; then
         success "O Kali já está atualizado."
@@ -97,6 +102,13 @@ summarize_upgrade_plan() {
         info "Pacotes para instalar ou atualizar: ${UPGRADE_ACTIONS}."
         if [[ "$REMOVE_ACTIONS" -gt 0 ]]; then
             warning "A atualização precisa remover ${REMOVE_ACTIONS} pacote(s) para resolver dependências."
+            printf '%s\n' 'Pacotes que o APT propõe remover:'
+            while IFS= read -r package_name; do
+                if [[ -n "$package_name" ]]; then
+                    printf '  - %s\n' "$package_name"
+                fi
+            done <<< "$REMOVAL_PACKAGES"
+            warning "Revise essa lista antes de confirmar a atualização."
         fi
     fi
 
@@ -104,6 +116,8 @@ summarize_upgrade_plan() {
 }
 
 main() {
+    local apt_status=0
+
     print_banner
     require_root
     require_commands apt-get awk dpkg getent grep date uname
@@ -122,14 +136,24 @@ main() {
 
     if [[ "$UPGRADE_ACTIONS" -eq 0 && "$REMOVE_ACTIONS" -eq 0 ]]; then
         :
-    elif confirm_action 'Aplicar agora a atualização completa do Kali?'; then
-        apt-get --assume-yes dist-upgrade
-        UPDATED=$((UPDATED + 1))
-        log_line 'apt-get dist-upgrade concluído.'
     else
-        warning "Atualização completa ignorada por escolha do usuário."
-        SKIPPED=$((SKIPPED + 1))
-        log_line 'apt-get dist-upgrade ignorado.'
+        info "O APT mostrará o plano completo e perguntará se deseja continuar."
+        info "Digite y somente depois de revisar o plano; digite n para cancelar."
+
+        if apt-get dist-upgrade; then
+            UPDATED=$((UPDATED + 1))
+            log_line 'apt-get dist-upgrade concluído.'
+        else
+            apt_status="$?"
+            if [[ "$apt_status" -eq 1 ]]; then
+                warning "Atualização completa cancelada; o módulo continuará apenas com as verificações."
+                SKIPPED=$((SKIPPED + 1))
+                log_line 'apt-get dist-upgrade cancelado pelo operador.'
+            else
+                die "apt-get dist-upgrade falhou com código ${apt_status}."
+                return "$apt_status"
+            fi
+        fi
     fi
 
     apt-get autoclean
