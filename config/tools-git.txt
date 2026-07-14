@@ -1,0 +1,11 @@
+# KALI SETUP - FERRAMENTAS QUE PODEM EXIGIR GIT NO FUTURO
+# Formato: nome|categoria|prioridade|método|pacote-ou-origem|comando-validacao|arquitetura
+testssl.sh|tls|OPTIONAL|git|https://github.com/testssl/testssl.sh|testssl.sh --version|ARM64 nativa
+puredns|dns|OPTIONAL|go|github.com/d3mondev/puredns/v2@latest|puredns --version|ARM64 compilada localmente
+massdns|dns|OPTIONAL|apt|massdns|massdns -h|ARM64 via pacote Kali
+httprobe|http|OPTIONAL|go|github.com/tomnomnom/httprobe@latest|httprobe -h|ARM64 compilada localmente
+hakrawler|crawling|OPTIONAL|go|github.com/hakluke/hakrawler@latest|hakrawler -h|ARM64 compilada localmente
+gau|urls|OPTIONAL|go|github.com/lc/gau/v2/cmd/gau@latest|gau --version|ARM64 compilada localmente
+waybackurls|urls|OPTIONAL|go|github.com/tomnomnom/waybackurls@latest|waybackurls -h|ARM64 compilada localmente
+gospider|crawling|OPTIONAL|apt|gospider|gospider --help|ARM64 via pacote Kali
+gowitness|screenshots|OPTIONAL|go|github.com/sensepost/gowitness@latest|gowitness version|ARM64 compilada localmente

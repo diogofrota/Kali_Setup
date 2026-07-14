@@ -1,0 +1,48 @@
+# ============================================================================
+# KALI SETUP - MODELO DE PROVEDORES DO SUBFINDER
+# ============================================================================
+#
+# Este arquivo é apenas um modelo público sem credenciais.
+#
+# O arquivo real deve ficar em:
+#
+# ~/.config/subfinder/provider-config.yaml
+#
+# A documentação oficial do ProjectDiscovery informa que o Subfinder armazena
+# provedores em YAML, aceita múltiplas chaves por provedor e usa credenciais
+# compostas separadas por dois-pontos em algumas fontes.
+#
+# Confira sempre o formato suportado pela versão instalada:
+#
+# subfinder -ls
+#
+# Este modelo mantém apenas campos vazios e não deve conter credenciais reais.
+# ============================================================================
+
+bevigil: []
+binaryedge: []
+bufferover: []
+builtwith: []
+c99: []
+censys: []
+certspotter: []
+chaos: []
+chinaz: []
+dnsdb: []
+dnsrepo: []
+facebook: []
+fofa: []
+fullhunt: []
+github: []
+hunter: []
+intelx: []
+passivetotal: []
+quake: []
+redhuntlabs: []
+robtex: []
+securitytrails: []
+shodan: []
+threatbook: []
+virustotal: []
+whoisxmlapi: []
+zoomeyeapi: []

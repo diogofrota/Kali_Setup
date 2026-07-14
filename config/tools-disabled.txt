@@ -1,0 +1,9 @@
+# KALI SETUP - FERRAMENTAS LEGACY, DESABILITADAS OU A CONFIRMAR
+# Formato: nome|categoria|prioridade|método|pacote-ou-origem|comando-validacao|arquitetura
+aquatone|screenshots|LEGACY|disabled|projeto legado; confirmar manutenção antes de usar|aquatone -version|compatibilidade desconhecida
+crackmapexec|active-directory|LEGACY|disabled|preferir NetExec quando validado|crackmapexec --version|compatibilidade desconhecida
+ripgen|rust|UNSUPPORTED|disabled|confirmar manutenção e relevância antes de instalar|ripgen --version|compatibilidade desconhecida
+rusthound-ce|active-directory|UNSUPPORTED|disabled|confirmar origem oficial e compatibilidade antes de instalar|rusthound-ce --version|compatibilidade desconhecida
+findomain|subdomains|OPTIONAL|disabled|confirmar suporte oficial para arquitetura atual antes de instalar|findomain --version|compatibilidade desconhecida
+eyewitness|screenshots|OPTIONAL|disabled|confirmar compatibilidade no Kali atual antes de instalar|eyewitness --help|compatibilidade desconhecida
+urldedupe|urls|OPTIONAL|disabled|confirmar origem oficial e manutenção antes de instalar|urldedupe -h|compatibilidade desconhecida

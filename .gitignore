@@ -1,0 +1,72 @@
+# ============================================================================
+# KALI SETUP - REGRAS DE PROTEÇÃO CONTRA VAZAMENTO DE CREDENCIAIS
+# ============================================================================
+#
+# Este arquivo existe para reduzir o risco de publicar secrets por acidente.
+# Ele não substitui revisão manual antes de cada commit, mas cria uma barreira
+# importante contra arquivos comuns de ambiente, chaves privadas e credenciais.
+
+# Arquivos .env costumam armazenar variáveis de ambiente e secrets locais.
+.env
+.env.*
+!.env.example
+
+# Arquivo real de chaves de API do KALI SETUP.
+# O modelo público continua permitido por regra explícita mais abaixo.
+api-keys.env
+**/api-keys.env
+!config/api-keys.env.example
+
+# Arquivos genéricos de secrets e diretórios usados por ferramentas variadas.
+*.secrets
+*.secret
+secrets/
+credentials/
+logs/*
+backups/
+!logs/.gitkeep
+*.log
+
+# Configuração real de provedores do Subfinder.
+# O modelo público sem credenciais continua permitido.
+provider-config.yaml
+**/provider-config.yaml
+!config/subfinder-provider-config.yaml.example
+
+# Chaves privadas, certificados exportados e cofres locais.
+*.pem
+*.key
+*.p12
+*.pfx
+*.kdbx
+.ssh/
+id_rsa*
+id_dsa*
+id_ecdsa*
+id_ed25519*
+
+# Credenciais locais de CLIs, nuvens e registries.
+.netrc
+.npmrc
+.pypirc
+.aws/
+.azure/
+.config/gcloud/
+.kube/
+kubeconfig*
+.vault-token
+
+# Configurações exportadas que podem conter credenciais.
+*.ovpn
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.auto.tfvars
+.terraform/
+
+# O modelo de engagement mantém apenas os placeholders vazios versionados.
+config/engagement-template/*/*
+!config/engagement-template/*/.gitkeep
+
+# Metadados locais do macOS.
+.DS_Store

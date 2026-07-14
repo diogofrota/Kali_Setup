@@ -1,0 +1,57 @@
+# KALI SETUP - PACOTES BASE
+# Formato: nome|categoria|prioridade|método|pacote-ou-origem|comando-validacao|arquitetura
+curl|base|CORE|apt|curl|curl --version|ARM64 via pacote Kali
+wget|base|CORE|apt|wget|wget --version|ARM64 via pacote Kali
+git|base|CORE|apt|git|git --version|ARM64 via pacote Kali
+jq|base|CORE|apt|jq|jq --version|ARM64 via pacote Kali
+yq|base|OPTIONAL|apt|yq|yq --version|ARM64 via pacote Kali
+unzip|base|CORE|apt|unzip|unzip -v|ARM64 via pacote Kali
+zip|base|CORE|apt|zip|zip -v|ARM64 via pacote Kali
+p7zip-full|base|RECOMMENDED|apt|p7zip-full|7z|ARM64 via pacote Kali
+tar|base|CORE|apt|tar|tar --version|ARM64 via pacote Kali
+gzip|base|CORE|apt|gzip|gzip --version|ARM64 via pacote Kali
+bzip2|base|CORE|apt|bzip2|bzip2 --version|ARM64 via pacote Kali
+xz-utils|base|CORE|apt|xz-utils|xz --version|ARM64 via pacote Kali
+file|base|CORE|apt|file|file --version|ARM64 via pacote Kali
+tree|base|RECOMMENDED|apt|tree|tree --version|ARM64 via pacote Kali
+rsync|base|CORE|apt|rsync|rsync --version|ARM64 via pacote Kali
+ripgrep|base|CORE|apt|ripgrep|rg --version|ARM64 via pacote Kali
+fd-find|base|RECOMMENDED|apt|fd-find|fdfind --version|ARM64 via pacote Kali
+fzf|base|RECOMMENDED|apt|fzf|fzf --version|ARM64 via pacote Kali
+tmux|base|CORE|apt|tmux|tmux -V|ARM64 via pacote Kali
+screen|base|RECOMMENDED|apt|screen|screen --version|ARM64 via pacote Kali
+nano|base|CORE|apt|nano|nano --version|ARM64 via pacote Kali
+vim|base|CORE|apt|vim|vim --version|ARM64 via pacote Kali
+less|base|CORE|apt|less|less --version|ARM64 via pacote Kali
+man-db|base|CORE|apt|man-db|man --version|ARM64 via pacote Kali
+ca-certificates|base|CORE|apt|ca-certificates|update-ca-certificates --help|ARM64 via pacote Kali
+gnupg|base|CORE|apt|gnupg|gpg --version|ARM64 via pacote Kali
+lsb-release|base|CORE|apt|lsb-release|lsb_release --version|ARM64 via pacote Kali
+software-properties-common|base|OPTIONAL|apt|software-properties-common|add-apt-repository --help|ARM64 via pacote Kali
+build-essential|build|CORE|apt|build-essential|make --version|ARM64 via pacote Kali
+pkg-config|build|CORE|apt|pkg-config|pkg-config --version|ARM64 via pacote Kali
+make|build|CORE|apt|make|make --version|ARM64 via pacote Kali
+cmake|build|RECOMMENDED|apt|cmake|cmake --version|ARM64 via pacote Kali
+gcc|build|CORE|apt|gcc|gcc --version|ARM64 via pacote Kali
+g++|build|CORE|apt|g++|g++ --version|ARM64 via pacote Kali
+libc6-dev|build|CORE|apt|libc6-dev|ldd --version|ARM64 via pacote Kali
+libssl-dev|build|CORE|apt|libssl-dev|pkg-config --exists openssl|ARM64 via pacote Kali
+libffi-dev|build|CORE|apt|libffi-dev|pkg-config --exists libffi|ARM64 via pacote Kali
+libpcap-dev|build|CORE|apt|libpcap-dev|pcap-config --version|ARM64 via pacote Kali
+python3|python|CORE|apt|python3|python3 --version|ARM64 via pacote Kali
+python3-venv|python|CORE|apt|python3-venv|python3 -m venv --help|ARM64 via pacote Kali
+python3-dev|python|CORE|apt|python3-dev|python3-config --includes|ARM64 via pacote Kali
+pipx|python|CORE|apt|pipx|pipx --version|ARM64 via pacote Kali
+shellcheck|quality|OPTIONAL|apt|shellcheck|shellcheck --version|ARM64 via pacote Kali
+openssh-client|remote|CORE|apt|openssh-client|ssh -V|ARM64 via pacote Kali
+openssh-server|remote|OPTIONAL|apt|openssh-server|sshd -V|ARM64 via pacote Kali
+net-tools|network|RECOMMENDED|apt|net-tools|ifconfig --version|ARM64 via pacote Kali
+iproute2|network|CORE|apt|iproute2|ip -V|ARM64 via pacote Kali
+dnsutils|network|CORE|apt|dnsutils|dig -v|ARM64 via pacote Kali
+whois|network|CORE|apt|whois|whois --version|ARM64 via pacote Kali
+traceroute|network|RECOMMENDED|apt|traceroute|traceroute --version|ARM64 via pacote Kali
+mtr-tiny|network|RECOMMENDED|apt|mtr-tiny|mtr --version|ARM64 via pacote Kali
+tcpdump|network|CORE|apt|tcpdump|tcpdump --version|ARM64 via pacote Kali
+socat|network|CORE|apt|socat|socat -V|ARM64 via pacote Kali
+netcat-openbsd|network|CORE|apt|netcat-openbsd|nc -h|ARM64 via pacote Kali
+rlwrap|shell|RECOMMENDED|apt|rlwrap|rlwrap --version|ARM64 via pacote Kali

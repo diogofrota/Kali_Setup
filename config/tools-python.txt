@@ -1,0 +1,18 @@
+# KALI SETUP - FERRAMENTAS PYTHON
+# Formato: nome|categoria|prioridade|método|pacote-ou-origem|comando-validacao|arquitetura
+impacket|ad|RECOMMENDED|apt|impacket-scripts|impacket-smbserver -h|ARM64 via pacote Kali
+wafw00f|web|RECOMMENDED|apt|wafw00f|wafw00f --version|ARM64 via pacote Kali
+arjun|web|OPTIONAL|apt|arjun|arjun --version|ARM64 via pacote Kali
+sqlmap|web|RECOMMENDED|apt|sqlmap|sqlmap --version|ARM64 via pacote Kali
+dirsearch|web|OPTIONAL|apt|dirsearch|dirsearch --version|ARM64 via pacote Kali
+mitmproxy|proxy|OPTIONAL|apt|mitmproxy|mitmproxy --version|ARM64 via pacote Kali
+scoutsuite|cloud|OPTIONAL|pipx|ScoutSuite|scout --help|ARM64 via pipx
+roadrecon|azure|OPTIONAL|pipx|roadrecon|roadrecon --help|ARM64 via pipx
+semgrep|code|OPTIONAL|pipx|semgrep|semgrep --version|ARM64 via pipx
+checkov|cloud|OPTIONAL|pipx|checkov|checkov --version|ARM64 via pipx
+detect-secrets|defensive|RECOMMENDED|pipx|detect-secrets|detect-secrets --version|ARM64 via pipx
+waymore|urls|OPTIONAL|pipx|waymore|waymore --help|ARM64 via pipx
+uro|urls|OPTIONAL|pipx|uro|uro --help|ARM64 via pipx
+shodan|intelligence|OPTIONAL|pipx|shodan|shodan version|ARM64 via pipx
+censys|intelligence|OPTIONAL|pipx|censys|censys --version|ARM64 via pipx
+theHarvester|intelligence|OPTIONAL|apt|theharvester|theHarvester --help|ARM64 via pacote Kali

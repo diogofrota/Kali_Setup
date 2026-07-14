@@ -1,0 +1,30 @@
+# KALI SETUP - FERRAMENTAS DE REDE
+# Formato: nome|categoria|prioridade|método|pacote-ou-origem|comando-validacao|arquitetura
+nmap|network|CORE|apt|nmap|nmap --version|ARM64 via pacote Kali
+masscan|network|RECOMMENDED|apt|masscan|masscan --version|ARM64 via pacote Kali
+arp-scan|network|RECOMMENDED|apt|arp-scan|arp-scan --version|ARM64 via pacote Kali
+netdiscover|network|OPTIONAL|apt|netdiscover|netdiscover -h|ARM64 via pacote Kali
+fping|network|CORE|apt|fping|fping -v|ARM64 via pacote Kali
+hping3|network|OPTIONAL|apt|hping3|hping3 --version|ARM64 via pacote Kali
+tcpdump|network|CORE|apt|tcpdump|tcpdump --version|ARM64 via pacote Kali
+wireshark|network|OPTIONAL|apt|wireshark|wireshark --version|ARM64 via pacote Kali
+tshark|network|OPTIONAL|apt|tshark|tshark --version|ARM64 via pacote Kali
+termshark|network|OPTIONAL|apt|termshark|termshark --version|compatibilidade desconhecida
+ettercap-text-only|network|OPTIONAL|apt|ettercap-text-only|ettercap -v|ARM64 via pacote Kali
+socat|network|CORE|apt|socat|socat -V|ARM64 via pacote Kali
+netcat-openbsd|network|CORE|apt|netcat-openbsd|nc -h|ARM64 via pacote Kali
+proxychains4|network|RECOMMENDED|apt|proxychains4|proxychains4 -h|ARM64 via pacote Kali
+dnsutils|dns|CORE|apt|dnsutils|dig -v|ARM64 via pacote Kali
+dnsrecon|dns|RECOMMENDED|apt|dnsrecon|dnsrecon --version|ARM64 via pacote Kali
+dnsenum|dns|OPTIONAL|apt|dnsenum|dnsenum --help|ARM64 via pacote Kali
+enum4linux-ng|smb|RECOMMENDED|apt|enum4linux-ng|enum4linux-ng --version|ARM64 via pacote Kali
+smbclient|smb|CORE|apt|smbclient|smbclient --version|ARM64 via pacote Kali
+samba-common-bin|smb|CORE|apt|samba-common-bin|rpcclient --version|ARM64 via pacote Kali
+snmp|network|RECOMMENDED|apt|snmp|snmpwalk --version|ARM64 via pacote Kali
+onesixtyone|network|OPTIONAL|apt|onesixtyone|onesixtyone -h|ARM64 via pacote Kali
+ike-scan|network|OPTIONAL|apt|ike-scan|ike-scan --version|ARM64 via pacote Kali
+sslscan|tls|RECOMMENDED|apt|sslscan|sslscan --version|ARM64 via pacote Kali
+ldap-utils|directory|RECOMMENDED|apt|ldap-utils|ldapsearch -VV|ARM64 via pacote Kali
+redis-tools|database|OPTIONAL|apt|redis-tools|redis-cli --version|ARM64 via pacote Kali
+postgresql-client|database|OPTIONAL|apt|postgresql-client|psql --version|ARM64 via pacote Kali
+default-mysql-client|database|OPTIONAL|apt|default-mysql-client|mysql --version|ARM64 via pacote Kali

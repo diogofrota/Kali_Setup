@@ -1,0 +1,12 @@
+# KALI SETUP - FERRAMENTAS OPCIONAIS
+# Formato: nome|categoria|prioridade|método|pacote-ou-origem|comando-validacao|arquitetura
+rustscan|network|OPTIONAL|apt|rustscan|rustscan --version|ARM64 via pacote Kali
+feroxbuster|content|OPTIONAL|apt|feroxbuster|feroxbuster --version|ARM64 via pacote Kali
+docker.io|containers|OPTIONAL|apt|docker.io|docker version|ARM64 via pacote Kali
+docker-compose|containers|OPTIONAL|apt|docker-compose|docker-compose version|ARM64 via pacote Kali
+docker-compose-plugin|containers|OPTIONAL|apt|docker-compose-plugin|docker compose version|compatibilidade desconhecida
+wireshark|network|OPTIONAL|apt|wireshark|wireshark --version|ARM64 via pacote Kali
+tshark|network|OPTIONAL|apt|tshark|tshark --version|ARM64 via pacote Kali
+termshark|network|OPTIONAL|apt|termshark|termshark --version|compatibilidade desconhecida
+scoutsuite|cloud|OPTIONAL|pipx|ScoutSuite|scout --help|ARM64 via pipx
+roadrecon|azure|OPTIONAL|pipx|roadrecon|roadrecon --help|ARM64 via pipx

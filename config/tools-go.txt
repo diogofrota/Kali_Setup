@@ -1,0 +1,23 @@
+# KALI SETUP - FERRAMENTAS GO
+# Formato: nome|categoria|prioridade|método|pacote-ou-origem|comando-validacao|arquitetura
+subfinder|subdomains|CORE|go|github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest|subfinder -version|ARM64 compilada localmente
+# Atenção: httpx é nome conflituoso em alguns ambientes. Para recon, este
+# registro se refere ao httpx do ProjectDiscovery instalado em ~/go/bin/httpx.
+httpx|http|CORE|go|github.com/projectdiscovery/httpx/cmd/httpx@latest|httpx -version|ARM64 compilada localmente
+nuclei|vulnerability|RECOMMENDED|go|github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest|nuclei -version|ARM64 compilada localmente
+naabu|ports|RECOMMENDED|go|github.com/projectdiscovery/naabu/v2/cmd/naabu@latest|naabu -version|ARM64 compilada localmente
+dnsx|dns|CORE|go|github.com/projectdiscovery/dnsx/cmd/dnsx@latest|dnsx -version|ARM64 compilada localmente
+katana|crawling|RECOMMENDED|go|github.com/projectdiscovery/katana/cmd/katana@latest|katana -version|ARM64 compilada localmente
+uncover|intelligence|OPTIONAL|go|github.com/projectdiscovery/uncover/cmd/uncover@latest|uncover -version|ARM64 compilada localmente
+interactsh-client|oast|OPTIONAL|go|github.com/projectdiscovery/interactsh/cmd/interactsh-client@latest|interactsh-client -version|ARM64 compilada localmente
+notify|notification|OPTIONAL|go|github.com/projectdiscovery/notify/cmd/notify@latest|notify -version|ARM64 compilada localmente
+cvemap|vulnerability|OPTIONAL|go|github.com/projectdiscovery/cvemap/cmd/cvemap@latest|cvemap -version|ARM64 compilada localmente
+chaos-client|subdomains|OPTIONAL|go|github.com/projectdiscovery/chaos-client/cmd/chaos@latest|chaos -version|ARM64 compilada localmente
+shuffledns|dns|OPTIONAL|go|github.com/projectdiscovery/shuffledns/cmd/shuffledns@latest|shuffledns -version|ARM64 compilada localmente
+assetfinder|subdomains|OPTIONAL|go|github.com/tomnomnom/assetfinder@latest|assetfinder -h|ARM64 compilada localmente
+anew|results|RECOMMENDED|go|github.com/tomnomnom/anew@latest|anew -h|ARM64 compilada localmente
+qsreplace|urls|OPTIONAL|go|github.com/tomnomnom/qsreplace@latest|qsreplace -h|ARM64 compilada localmente
+unfurl|urls|OPTIONAL|go|github.com/tomnomnom/unfurl@latest|unfurl -h|ARM64 compilada localmente
+ffuf|content|RECOMMENDED|apt|ffuf|ffuf -V|ARM64 via pacote Kali
+gobuster|content|RECOMMENDED|apt|gobuster|gobuster version|ARM64 via pacote Kali
+feroxbuster|content|RECOMMENDED|apt|feroxbuster|feroxbuster --version|ARM64 via pacote Kali
