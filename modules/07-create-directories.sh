@@ -15,6 +15,52 @@
 # relatórios, evidências, wordlists, payloads, laboratórios, ferramentas e
 # arquivos temporários de trabalho.
 #
+# LOCAL DE CRIAÇÃO
+#
+# Todos os diretórios são criados diretamente no home do usuário real,
+# detectado mesmo quando o módulo é executado com sudo:
+#
+#   ${REAL_HOME}/
+#
+# Exemplo usando sudo como diogo: /home/diogo/. Se o módulo for executado
+# diretamente em uma sessão root, sem SUDO_USER, o home real será /root.
+#
+# ÁRVORE CRIADA
+#
+# ${REAL_HOME}/
+# ├── Labs/          (750)
+# ├── Projects/      (750)
+# ├── Scripts/       (750)
+# ├── Tools/         (750)
+# ├── Git/           (750)
+# ├── Reports/       (750)
+# ├── Clients/       (700 - privado)
+# ├── Notes/         (750)
+# ├── Wordlists/     (750)
+# ├── Payloads/      (750)
+# ├── Docker/        (750)
+# ├── Captures/      (750)
+# ├── Evidence/      (700 - privado)
+# ├── Screenshots/   (750)
+# ├── Engagements/   (750)
+# ├── Templates/     (750)
+# ├── Backups/       (700 - privado)
+# ├── Temp/          (750)
+# └── Logs/          (750)
+#
+# Cada diretório pertence a ${REAL_USER}:${REAL_USER}. Diretórios que já existem
+# também recebem novamente o proprietário e a permissão definidos acima.
+#
+# LOG TÉCNICO DA EXECUÇÃO
+#
+# Além da árvore principal, start_log mantém o log privado do módulo em:
+#
+# ${REAL_HOME}/.local/state/kali-setup/logs/                       (700)
+# └── 07-create-directories-AAAAMMDD-HHMMSS.log                   (600)
+#
+# O template de engagement permanece em config/engagement-template e não é
+# copiado automaticamente para o home.
+#
 # FLUXO DE EXECUÇÃO
 #
 # 1. Confirma privilégios administrativos.
