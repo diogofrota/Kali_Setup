@@ -110,7 +110,8 @@ process_inventory() {
     local validacao=''
     local arquitetura=''
 
-    while IFS= read -r linha; do
+    # Mantém o inventário separado da entrada interativa do terminal.
+    while IFS= read -r -u 9 linha; do
         if [[ -z "$linha" ]]; then
             continue
         fi
@@ -128,7 +129,7 @@ process_inventory() {
         if [[ "$metodo" == 'apt' ]]; then
             install_network_package "$origem" "$prioridade"
         fi
-    done < "$CONFIG_FILE"
+    done 9< "$CONFIG_FILE"
 }
 
 configure_wireshark_capture() {

@@ -127,7 +127,8 @@ process_go_inventory() {
     local validacao=''
     local arquitetura=''
 
-    while IFS= read -r linha; do
+    # Mantém o inventário separado da entrada interativa do terminal.
+    while IFS= read -r -u 9 linha; do
         if [[ -z "$linha" ]]; then
             continue
         fi
@@ -140,7 +141,7 @@ process_go_inventory() {
         if [[ "$metodo" == 'go' ]]; then
             install_go_tool "$nome" "$prioridade" "$origem" "$validacao"
         fi
-    done < "$CONFIG_FILE"
+    done 9< "$CONFIG_FILE"
 }
 
 main() {

@@ -153,7 +153,8 @@ process_file() {
     local validacao=''
     local arquitetura=''
 
-    while IFS= read -r linha; do
+    # Mantém o inventário separado da entrada interativa do terminal.
+    while IFS= read -r -u 9 linha; do
         if [[ -z "$linha" ]]; then
             continue
         fi
@@ -189,7 +190,7 @@ process_file() {
         else
             SKIPPED=$((SKIPPED + 1))
         fi
-    done < "$arquivo"
+    done 9< "$arquivo"
 }
 
 main() {

@@ -113,7 +113,9 @@ process_inventory() {
     local validacao=''
     local arquitetura=''
 
-    while IFS= read -r linha; do
+    # O inventário usa um descritor próprio para não ocupar a entrada padrão.
+    # Assim, perguntas do APT e confirm_action continuam lendo do terminal.
+    while IFS= read -r -u 9 linha; do
         if [[ -z "$linha" ]]; then
             continue
         fi
@@ -132,7 +134,7 @@ process_inventory() {
         if [[ "$metodo" == 'apt' ]]; then
             install_package "$origem" "$prioridade"
         fi
-    done < "$CONFIG_FILE"
+    done 9< "$CONFIG_FILE"
 }
 
 main() {
