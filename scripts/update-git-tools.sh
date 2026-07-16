@@ -16,7 +16,7 @@
 #
 # FLUXO DE EXECUÇÃO
 #
-# 1. Abre config/tools-git.txt.
+# 1. Abre config/15-tools-git.txt.
 # 2. Ignora comentários e linhas vazias.
 # 3. Filtra registros cujo método é git.
 # 4. Mostra nome e origem para revisão manual.
@@ -31,7 +31,7 @@ set -Eeuo pipefail
 umask 077
 
 PROJECT_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."; pwd -P)"
-CONFIG_FILE="${PROJECT_ROOT}/config/tools-git.txt"
+CONFIG_FILE="${PROJECT_ROOT}/config/15-tools-git.txt"
 
 main() {
     local linha=''

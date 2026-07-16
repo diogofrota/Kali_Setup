@@ -12,13 +12,13 @@
 # OBJETIVO
 #
 # Atualizar ferramentas Python gerenciadas por pipx conforme o inventário
-# config/tools-python.txt.
+# config/10-tools-python.txt.
 #
 # FLUXO DE EXECUÇÃO
 #
 # 1. Confirma se pipx existe no sistema.
 # 2. Pergunta se o operador deseja atualizar ferramentas Python.
-# 3. Lê config/tools-python.txt.
+# 3. Lê config/10-tools-python.txt.
 # 4. Processa apenas registros com método pipx.
 # 5. Executa pipx upgrade para cada origem encontrada.
 #
@@ -32,7 +32,7 @@ set -Eeuo pipefail
 umask 077
 
 PROJECT_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."; pwd -P)"
-CONFIG_FILE="${PROJECT_ROOT}/config/tools-python.txt"
+CONFIG_FILE="${PROJECT_ROOT}/config/10-tools-python.txt"
 
 main() {
     local linha=''

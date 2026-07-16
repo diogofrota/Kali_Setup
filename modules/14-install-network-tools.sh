@@ -12,7 +12,7 @@
 # OBJETIVO
 #
 # Instalar ferramentas de rede, enumeração, captura, DNS, SMB, SNMP, TLS, LDAP
-# e clientes de banco de dados a partir do inventário config/packages-network.txt.
+# e clientes de banco de dados a partir do inventário config/14-packages-network.txt.
 #
 # FLUXO DE EXECUÇÃO
 #
@@ -41,7 +41,7 @@ MODULE_NAME='14-install-network-tools'
 NEXT_MODULE='15-install-recon-tools.sh'
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")"; pwd -P)"
 PROJECT_ROOT="$(dirname -- "$SCRIPT_DIR")"
-CONFIG_FILE="${PROJECT_ROOT}/config/packages-network.txt"
+CONFIG_FILE="${PROJECT_ROOT}/config/14-packages-network.txt"
 
 # shellcheck source=../lib/common.sh
 source "${PROJECT_ROOT}/lib/common.sh"

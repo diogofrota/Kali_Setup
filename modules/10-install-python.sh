@@ -13,7 +13,7 @@
 #
 # Preparar o runtime Python profissional com python3, venv, headers de
 # desenvolvimento e pipx, instalando ferramentas Python isoladas conforme o
-# inventário config/tools-python.txt.
+# inventário config/10-tools-python.txt.
 #
 # FLUXO DE EXECUÇÃO
 #
@@ -43,7 +43,7 @@ MODULE_NAME='10-install-python'
 NEXT_MODULE='11-install-go.sh'
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")"; pwd -P)"
 PROJECT_ROOT="$(dirname -- "$SCRIPT_DIR")"
-CONFIG_FILE="${PROJECT_ROOT}/config/tools-python.txt"
+CONFIG_FILE="${PROJECT_ROOT}/config/10-tools-python.txt"
 
 # shellcheck source=../lib/common.sh
 source "${PROJECT_ROOT}/lib/common.sh"

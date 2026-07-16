@@ -21,7 +21,7 @@
 # 2. Valida que o sistema é Kali Linux.
 # 3. Cria ~/go e ~/go/bin com dono e permissões corretas.
 # 4. Instala golang-go via APT quando Go ainda não existe.
-# 5. Lê config/tools-go.txt.
+# 5. Lê config/11-tools-go.txt.
 # 6. Instala automaticamente todas as ferramentas via Go ou APT.
 # 7. Mostra no final o que foi instalado e quais itens falharam.
 #
@@ -44,7 +44,7 @@ MODULE_NAME='11-install-go'
 NEXT_MODULE='12-install-rust.sh'
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")"; pwd -P)"
 PROJECT_ROOT="$(dirname -- "$SCRIPT_DIR")"
-CONFIG_FILE="${PROJECT_ROOT}/config/tools-go.txt"
+CONFIG_FILE="${PROJECT_ROOT}/config/11-tools-go.txt"
 
 # shellcheck source=../lib/common.sh
 source "${PROJECT_ROOT}/lib/common.sh"

@@ -196,7 +196,7 @@ confirm_sensitive_module() {
     local resposta=''
 
     case "$modulo" in
-        03-*|05-*|06-*|10-*|11-*|12-*|13-*|14-*|15-*)
+        03-*|05-*|06-*|10-*|11-*|12-*|13-*|14-*|15-*|16-*|17-*)
             warning "O módulo ${modulo} pode alterar sistema, pacotes, usuários, serviços ou diretórios."
             printf 'Digite EXECUTAR para chamar este módulo: '
             read -r resposta

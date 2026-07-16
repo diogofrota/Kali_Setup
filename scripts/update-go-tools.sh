@@ -12,13 +12,13 @@
 # OBJETIVO
 #
 # Atualizar ferramentas Go classificadas como CORE ou RECOMMENDED no inventário
-# config/tools-go.txt usando go install.
+# config/11-tools-go.txt usando go install.
 #
 # FLUXO DE EXECUÇÃO
 #
 # 1. Confirma se o comando go existe.
 # 2. Pergunta se o operador deseja atualizar ferramentas Go.
-# 3. Lê config/tools-go.txt.
+# 3. Lê config/11-tools-go.txt.
 # 4. Processa apenas registros com método go.
 # 5. Atualiza somente prioridades CORE e RECOMMENDED.
 # 6. Ignora ferramentas OPTIONAL por padrão.
@@ -33,7 +33,7 @@ set -Eeuo pipefail
 umask 077
 
 PROJECT_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."; pwd -P)"
-CONFIG_FILE="${PROJECT_ROOT}/config/tools-go.txt"
+CONFIG_FILE="${PROJECT_ROOT}/config/11-tools-go.txt"
 
 confirm() {
     local resposta=''

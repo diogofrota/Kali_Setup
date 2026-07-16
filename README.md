@@ -10,8 +10,8 @@ A ideia do projeto é tratar a preparação da máquina como software profission
 
 O repositório já possui a estrutura principal do KALI SETUP:
 
-- Módulos reais de `01` a `15`, responsáveis por usuário, hostname, API keys, atualização do sistema, pacotes base, diretórios, shell, Git, Python, Go, Rust, Docker, ferramentas de rede e ferramentas de reconhecimento.
-- Módulos planejados de `16` a `30`, já criados como placeholders documentados para Web, vulnerabilidades, senhas, Active Directory, OSINT, Cloud, Mobile, Wireless, Forense, Relatórios, Wordlists, Laboratórios, PATH, Validação e Atualização.
+- Módulos reais de `01` a `17`, incluindo preparação do sistema, runtimes e ferramentas de rede, reconhecimento, Web e validação de vulnerabilidades.
+- Módulos planejados de `18` a `30`, já criados como placeholders documentados para senhas, Active Directory, OSINT, Cloud, Mobile, Wireless, Forense, Relatórios, Wordlists, Laboratórios, PATH, Validação e Atualização.
 - Inventários parseáveis em `config/*.txt`, usados pelos módulos e scripts auxiliares para decidir o que instalar, validar ou ignorar.
 - Documentação complementar em `docs/`.
 - Scripts auxiliares em `scripts/` para validação, edição de chaves, exportação segura de variáveis e manutenção de ferramentas.
@@ -27,14 +27,16 @@ kali-setup/
 ├── install.sh
 ├── config/
 │   ├── api-keys.env.example
-│   ├── packages-base.txt
-│   ├── packages-network.txt
+│   ├── 06-packages-base.txt
+│   ├── 14-packages-network.txt
+│   ├── 17-packages-vulnerability.txt
+│   ├── 16-packages-web.txt
 │   ├── subfinder-provider-config.yaml.example
-│   ├── tools-disabled.txt
-│   ├── tools-git.txt
-│   ├── tools-go.txt
+│   ├── 15-tools-disabled.txt
+│   ├── 15-tools-git.txt
+│   ├── 11-tools-go.txt
 │   ├── tools-optional.txt
-│   ├── tools-python.txt
+│   ├── 10-tools-python.txt
 │   └── engagement-template/
 │       ├── README.md
 │       ├── archive/.gitkeep
@@ -502,7 +504,7 @@ Risco: atualização de sistema pode alterar bibliotecas, serviços e kernel. Po
 
 ### `modules/06-base-packages.sh`
 
-Instala pacotes base definidos em `config/packages-base.txt`.
+Instala pacotes base definidos em `config/06-packages-base.txt`.
 
 O que faz:
 
@@ -623,7 +625,7 @@ O que faz:
 - prepara `~/.local/bin` com proprietário e permissões corretos;
 - cria `~/.virtualenvs` com permissão restritiva;
 - executa `pipx ensurepath`;
-- processa `config/tools-python.txt`;
+- processa `config/10-tools-python.txt`;
 - instala automaticamente todas as ferramentas via APT ou `pipx`, inclusive as marcadas como `OPTIONAL`;
 - continua com os próximos itens quando uma instalação individual falha;
 - mostra no final as ferramentas instaladas nesta execução e eventuais falhas;
@@ -658,7 +660,7 @@ O que faz:
 - valida Kali;
 - cria e repara as permissões de `~/go` e `~/go/bin`;
 - instala `golang-go` via APT se `go` não existir;
-- processa `config/tools-go.txt`;
+- processa `config/11-tools-go.txt`;
 - instala automaticamente todas as ferramentas `CORE`, `RECOMMENDED` e `OPTIONAL`;
 - instala também os itens do inventário cujo método é APT;
 - continua com os próximos itens quando uma instalação individual falha;
@@ -726,7 +728,7 @@ Risco importante: membros do grupo `docker` podem escalar privilégios no sistem
 
 ### `modules/14-install-network-tools.sh`
 
-Instala ferramentas de rede definidas em `config/packages-network.txt`.
+Instala ferramentas de rede definidas em `config/14-packages-network.txt`.
 
 O que faz:
 
@@ -773,10 +775,10 @@ Instala ferramentas de reconhecimento a partir de múltiplos inventários.
 
 Arquivos processados:
 
-- `config/tools-go.txt`
-- `config/tools-python.txt`
-- `config/tools-git.txt`
-- `config/tools-disabled.txt`
+- `config/11-tools-go.txt`
+- `config/10-tools-python.txt`
+- `config/15-tools-git.txt`
+- `config/15-tools-disabled.txt`
 
 Métodos suportados:
 
@@ -808,7 +810,8 @@ Categorias cobertas:
 
 ### `modules/16-install-web-tools.sh`
 
-Módulo planejado para ferramentas Web.
+Instala automaticamente o inventário `config/16-packages-web.txt` via APT, sem
+iniciar proxies, navegadores, listeners ou varreduras.
 
 Escopo documentado:
 
@@ -823,13 +826,17 @@ Escopo documentado:
 - `wafw00f`;
 - `whatweb`;
 - `wpscan`;
+- `mitmproxy`;
+- `dirsearch`;
 - navegadores.
 
-No estado atual, apenas imprime objetivo, escopo, dependências e TODOs. Não instala ferramentas.
+Pacotes ausentes no repositório da arquitetura atual são registrados como
+falhas isoladas, sem impedir a tentativa de instalação dos itens seguintes.
 
 ### `modules/17-install-vulnerability-tools.sh`
 
-Módulo planejado para validadores e scanners de vulnerabilidade.
+Instala automaticamente validadores e ferramentas de pesquisa por APT ou Go,
+usando `config/17-packages-vulnerability.txt`.
 
 Escopo documentado:
 
@@ -837,9 +844,12 @@ Escopo documentado:
 - templates oficiais;
 - `sslscan`;
 - `testssl.sh`;
-- ferramentas defensivas de revisão.
+- `lynis`;
+- `exploitdb`;
+- Metasploit Framework;
+- `wapiti` e `yara`.
 
-Não executa scans automaticamente.
+Não executa scans nem atualiza templates automaticamente.
 
 ### `modules/18-install-password-tools.sh`
 
@@ -1138,11 +1148,11 @@ Valida todas as ferramentas dos inventários principais.
 
 O que faz:
 
-- percorre `packages-base.txt`;
-- percorre `packages-network.txt`;
-- percorre `tools-go.txt`;
-- percorre `tools-python.txt`;
-- percorre `tools-git.txt`;
+- percorre `06-packages-base.txt`;
+- percorre `14-packages-network.txt`;
+- percorre `11-tools-go.txt`;
+- percorre `10-tools-python.txt`;
+- percorre `15-tools-git.txt`;
 - percorre `tools-optional.txt`;
 - verifica cada comando com `command -v`;
 - marca ferramentas Go como `conflito/fora do padrão` quando existe um comando com o mesmo nome no `PATH`, mas o binário esperado não está em `~/go/bin`;
@@ -1179,7 +1189,7 @@ O que faz:
 
 - exige `go` no sistema;
 - pede confirmação;
-- lê `config/tools-go.txt`;
+- lê `config/11-tools-go.txt`;
 - processa apenas linhas com método `go`;
 - atualiza somente prioridades `CORE` e `RECOMMENDED`;
 - ignora ferramentas `OPTIONAL` por padrão;
@@ -1199,7 +1209,7 @@ O que faz:
 
 - exige `pipx`;
 - pede confirmação;
-- lê `config/tools-python.txt`;
+- lê `config/10-tools-python.txt`;
 - processa apenas linhas com método `pipx`;
 - executa `pipx upgrade <pacote>`.
 
@@ -1215,7 +1225,7 @@ Lista ferramentas cujo método é `git`.
 
 O que faz:
 
-- lê `config/tools-git.txt`;
+- lê `config/15-tools-git.txt`;
 - imprime ferramentas marcadas com método `git`;
 - não executa `git clone`;
 - não executa `git pull`;
@@ -1300,7 +1310,7 @@ O arquivo real fica fora do repositório:
 ~/.config/subfinder/provider-config.yaml
 ```
 
-### `config/packages-base.txt`
+### `config/06-packages-base.txt`
 
 Inventário de pacotes base instalados pelo módulo `06`.
 
@@ -1320,7 +1330,7 @@ Categorias principais:
 - `network`: rede básica.
 - `shell`: melhoria de terminal.
 
-### `config/packages-network.txt`
+### `config/14-packages-network.txt`
 
 Inventário de ferramentas de rede instaladas pelo módulo `14`.
 
@@ -1337,7 +1347,7 @@ Inclui ferramentas de:
 - LDAP;
 - clientes de banco de dados.
 
-### `config/tools-go.txt`
+### `config/11-tools-go.txt`
 
 Inventário de ferramentas Go usadas principalmente pelos módulos `11` e `15`.
 
@@ -1359,7 +1369,7 @@ Ferramentas centrais:
 - `gobuster`
 - `feroxbuster`
 
-### `config/tools-python.txt`
+### `config/10-tools-python.txt`
 
 Inventário de ferramentas Python usadas pelos módulos `10` e `15`.
 
@@ -1370,7 +1380,7 @@ Métodos possíveis:
 
 O projeto prefere `pipx` para ferramentas Python que não precisam ser bibliotecas do sistema.
 
-### `config/tools-git.txt`
+### `config/15-tools-git.txt`
 
 Inventário de ferramentas que podem exigir Git ou revisão manual.
 
@@ -1407,7 +1417,7 @@ Inclui:
 
 Serve como referência complementar para manutenção e validação.
 
-### `config/tools-disabled.txt`
+### `config/15-tools-disabled.txt`
 
 Inventário de ferramentas legadas, desabilitadas ou a confirmar.
 

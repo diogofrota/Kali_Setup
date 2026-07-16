@@ -13,7 +13,7 @@
 #
 # Instalar utilitários essenciais de administração, terminal, rede básica,
 # compilação, Python e qualidade de código a partir do inventário
-# config/packages-base.txt.
+# config/06-packages-base.txt.
 #
 # FLUXO DE EXECUÇÃO
 #
@@ -41,7 +41,7 @@ MODULE_NAME='06-base-packages'
 NEXT_MODULE='07-create-directories.sh'
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")"; pwd -P)"
 PROJECT_ROOT="$(dirname -- "$SCRIPT_DIR")"
-CONFIG_FILE="${PROJECT_ROOT}/config/packages-base.txt"
+CONFIG_FILE="${PROJECT_ROOT}/config/06-packages-base.txt"
 
 # shellcheck source=../lib/common.sh
 source "${PROJECT_ROOT}/lib/common.sh"
@@ -115,7 +115,7 @@ process_inventory() {
         IFS='|' read -r nome categoria prioridade metodo origem validacao arquitetura <<< "$linha"
 
         if [[ -z "${arquitetura:-}" ]]; then
-            warning "Linha inválida ignorada em packages-base.txt."
+            warning "Linha inválida ignorada em 06-packages-base.txt."
             FAILED=$((FAILED + 1))
             continue
         fi

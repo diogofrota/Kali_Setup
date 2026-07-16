@@ -1,0 +1,17 @@
+# KALI SETUP - FERRAMENTAS WEB
+# Formato: nome|categoria|prioridade|método|pacote-ou-origem|comando-validacao|arquitetura
+burpsuite|proxy|RECOMMENDED|apt|burpsuite|burpsuite --help|ARM64 via pacote Kali
+zaproxy|proxy|RECOMMENDED|apt|zaproxy|zaproxy -version|ARM64 via pacote Kali
+ffuf|content|CORE|apt|ffuf|ffuf -V|ARM64 via pacote Kali
+feroxbuster|content|CORE|apt|feroxbuster|feroxbuster --version|ARM64 via pacote Kali
+gobuster|content|CORE|apt|gobuster|gobuster version|ARM64 via pacote Kali
+dirsearch|content|RECOMMENDED|apt|dirsearch|dirsearch --version|ARM64 via pacote Kali
+nikto|scanner|CORE|apt|nikto|nikto -Version|ARM64 via pacote Kali
+sqlmap|injection|CORE|apt|sqlmap|sqlmap --version|ARM64 via pacote Kali
+arjun|parameters|RECOMMENDED|apt|arjun|arjun --version|ARM64 via pacote Kali
+wafw00f|fingerprint|RECOMMENDED|apt|wafw00f|wafw00f --version|ARM64 via pacote Kali
+whatweb|fingerprint|CORE|apt|whatweb|whatweb --version|ARM64 via pacote Kali
+wpscan|cms|RECOMMENDED|apt|wpscan|wpscan --version|ARM64 via pacote Kali
+mitmproxy|proxy|RECOMMENDED|apt|mitmproxy|mitmproxy --version|ARM64 via pacote Kali
+chromium|browser|OPTIONAL|apt|chromium|chromium --version|ARM64 via pacote Kali
+firefox-esr|browser|OPTIONAL|apt|firefox-esr|firefox-esr --version|ARM64 via pacote Kali

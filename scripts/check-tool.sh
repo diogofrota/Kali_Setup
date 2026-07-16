@@ -48,7 +48,7 @@ find_tool_line() {
     local linha=''
     local nome=''
 
-    for arquivo in "$CONFIG_DIR"/packages-base.txt "$CONFIG_DIR"/packages-network.txt "$CONFIG_DIR"/tools-go.txt "$CONFIG_DIR"/tools-python.txt "$CONFIG_DIR"/tools-git.txt "$CONFIG_DIR"/tools-optional.txt "$CONFIG_DIR"/tools-disabled.txt; do
+    for arquivo in "$CONFIG_DIR"/06-packages-base.txt "$CONFIG_DIR"/14-packages-network.txt "$CONFIG_DIR"/16-packages-web.txt "$CONFIG_DIR"/17-packages-vulnerability.txt "$CONFIG_DIR"/11-tools-go.txt "$CONFIG_DIR"/10-tools-python.txt "$CONFIG_DIR"/15-tools-git.txt "$CONFIG_DIR"/tools-optional.txt "$CONFIG_DIR"/15-tools-disabled.txt; do
         if [[ ! -f "$arquivo" ]]; then
             continue
         fi

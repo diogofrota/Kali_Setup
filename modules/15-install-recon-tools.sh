@@ -200,10 +200,10 @@ main() {
     LOG_FILE="$(start_log "$REAL_USER" "$MODULE_NAME")"
 
     info "Categorias: Subdomínios, DNS, HTTP, Portas, Crawling, URLs, Screenshots, Inteligência e Organização."
-    process_file "${PROJECT_ROOT}/config/tools-go.txt"
-    process_file "${PROJECT_ROOT}/config/tools-python.txt"
-    process_file "${PROJECT_ROOT}/config/tools-git.txt"
-    process_file "${PROJECT_ROOT}/config/tools-disabled.txt"
+    process_file "${PROJECT_ROOT}/config/11-tools-go.txt"
+    process_file "${PROJECT_ROOT}/config/10-tools-python.txt"
+    process_file "${PROJECT_ROOT}/config/15-tools-git.txt"
+    process_file "${PROJECT_ROOT}/config/15-tools-disabled.txt"
 
     print_summary_line 'Instaladas' "$INSTALLED"
     print_summary_line 'Já existentes' "$EXISTING"
