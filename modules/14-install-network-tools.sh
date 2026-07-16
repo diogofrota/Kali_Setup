@@ -19,9 +19,8 @@
 # 1. Confirma privilégios administrativos.
 # 2. Valida que o sistema é Kali Linux.
 # 3. Lê o inventário de ferramentas de rede linha por linha.
-# 4. Instala ferramentas CORE e RECOMMENDED via APT.
-# 5. Pergunta antes de ferramentas OPTIONAL.
-# 6. Pergunta antes de configurar captura Wireshark para usuários não root.
+# 4. Instala ferramentas CORE, RECOMMENDED e OPTIONAL via APT.
+# 5. Pergunta antes de configurar captura Wireshark para usuários não root.
 #
 # RISCOS CONTROLADOS
 #
@@ -78,17 +77,9 @@ install_network_package() {
 
     if apt_package_exists "$pacote"; then
         case "$prioridade" in
-            CORE|RECOMMENDED)
+            CORE|RECOMMENDED|OPTIONAL)
                 apt-get install -y -- "$pacote"
                 INSTALLED=$((INSTALLED + 1))
-                ;;
-            OPTIONAL)
-                if confirm_action "Instalar ferramenta opcional ${pacote}?"; then
-                    apt-get install -y -- "$pacote"
-                    INSTALLED=$((INSTALLED + 1))
-                else
-                    SKIPPED=$((SKIPPED + 1))
-                fi
                 ;;
             *)
                 SKIPPED=$((SKIPPED + 1))

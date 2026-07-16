@@ -12,7 +12,7 @@
 # OBJETIVO
 #
 # Preparar o ambiente Rust/Cargo para ferramentas que dependem desse ecossistema
-# e instalar ferramentas opcionais somente com confirmação do operador.
+# e instalar automaticamente as ferramentas opcionais validadas.
 #
 # FLUXO DE EXECUÇÃO
 #
@@ -20,14 +20,13 @@
 # 2. Valida que o sistema é Kali Linux.
 # 3. Cria ~/.cargo e ~/.cargo/bin com dono e permissões corretas.
 # 4. Instala cargo e rustc via APT quando disponíveis.
-# 5. Pergunta antes de instalar ferramentas Rust opcionais.
+# 5. Instala automaticamente as ferramentas Rust opcionais validadas.
 # 6. Mantém ferramentas não validadas fora do fluxo automático.
 #
 # RISCOS CONTROLADOS
 #
-# O módulo não executa instaladores remotos como rustup automaticamente. Cada
-# ferramenta instalada via cargo exige confirmação e ferramentas sem validação
-# de manutenção permanecem desabilitadas.
+# O módulo não executa instaladores remotos como rustup automaticamente.
+# Ferramentas sem validação de manutenção permanecem desabilitadas.
 ###############################################################################
 
 set -Eeuo pipefail
@@ -90,15 +89,12 @@ maybe_install_rust_tool() {
         return 0
     fi
 
-    if confirm_action "Instalar ferramenta Rust opcional ${pacote} via cargo?"; then
-        run_as_real_user "$REAL_USER" env \
-            HOME="$REAL_HOME" \
-            CARGO_HOME="${REAL_HOME}/.cargo" \
-            cargo install "$pacote"
-        INSTALLED=$((INSTALLED + 1))
-    else
-        SKIPPED=$((SKIPPED + 1))
-    fi
+    info "Instalando ferramenta Rust ${pacote} via cargo."
+    run_as_real_user "$REAL_USER" env \
+        HOME="$REAL_HOME" \
+        CARGO_HOME="${REAL_HOME}/.cargo" \
+        cargo install "$pacote"
+    INSTALLED=$((INSTALLED + 1))
 }
 
 main() {

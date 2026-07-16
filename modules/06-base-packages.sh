@@ -20,15 +20,13 @@
 # 1. Confirma privilégios administrativos.
 # 2. Valida que o sistema é Kali Linux.
 # 3. Lê o inventário de pacotes base linha por linha.
-# 4. Instala pacotes CORE e RECOMMENDED quando ausentes.
-# 5. Pergunta antes de instalar pacotes OPTIONAL.
-# 6. Ignora linhas inválidas e registra contadores no resumo.
+# 4. Instala pacotes CORE, RECOMMENDED e OPTIONAL quando ausentes.
+# 5. Ignora linhas inválidas e registra contadores no resumo.
 #
 # RISCOS CONTROLADOS
 #
 # O módulo não instala metapacotes gigantes como kali-linux-everything. Cada
-# pacote é validado no apt-cache antes da instalação e ferramentas opcionais
-# exigem confirmação.
+# pacote é validado no apt-cache antes da instalação.
 ###############################################################################
 
 set -Eeuo pipefail
@@ -79,18 +77,10 @@ install_package() {
 
     if apt_package_exists "$pacote"; then
         case "$prioridade" in
-            CORE|RECOMMENDED)
+            CORE|RECOMMENDED|OPTIONAL)
                 info "Instalando pacote ${prioridade}: ${pacote}"
                 apt-get install -y -- "$pacote"
                 INSTALLED=$((INSTALLED + 1))
-                ;;
-            OPTIONAL)
-                if confirm_action "Instalar pacote opcional ${pacote}?"; then
-                    apt-get install -y -- "$pacote"
-                    INSTALLED=$((INSTALLED + 1))
-                else
-                    SKIPPED=$((SKIPPED + 1))
-                fi
                 ;;
             *)
                 warning "Prioridade desconhecida para ${pacote}; ignorado."
@@ -114,7 +104,6 @@ process_inventory() {
     local arquitetura=''
 
     # O inventário usa um descritor próprio para não ocupar a entrada padrão.
-    # Assim, perguntas do APT e confirm_action continuam lendo do terminal.
     while IFS= read -r -u 9 linha; do
         if [[ -z "$linha" ]]; then
             continue

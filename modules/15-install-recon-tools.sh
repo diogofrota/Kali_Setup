@@ -20,10 +20,9 @@
 # 1. Confirma privilégios administrativos.
 # 2. Valida que o sistema é Kali Linux.
 # 3. Lê inventários de ferramentas Go, Python, Git e desabilitadas.
-# 4. Instala prioridades CORE e RECOMMENDED.
-# 5. Pergunta antes de prioridades OPTIONAL.
-# 6. Ignora LEGACY e UNSUPPORTED.
-# 7. Não instala ferramentas marcadas como método git sem revisão manual.
+# 4. Instala prioridades CORE, RECOMMENDED e OPTIONAL automaticamente.
+# 5. Ignora LEGACY e UNSUPPORTED.
+# 6. Não instala ferramentas marcadas como método git sem revisão manual.
 #
 # RISCOS CONTROLADOS
 #
@@ -73,11 +72,9 @@ should_install_priority() {
     local nome="$2"
 
     case "$prioridade" in
-        CORE|RECOMMENDED)
+        CORE|RECOMMENDED|OPTIONAL)
+            info "Instalação automática habilitada para ${nome} (${prioridade})."
             return 0
-            ;;
-        OPTIONAL)
-            confirm_action "Instalar ferramenta opcional de reconhecimento ${nome}?"
             ;;
         LEGACY|UNSUPPORTED)
             warning "Ferramenta ${nome} marcada como ${prioridade}; não será instalada."
