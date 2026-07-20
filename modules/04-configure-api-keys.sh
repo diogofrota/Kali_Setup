@@ -26,6 +26,35 @@
 # 8. Cria ~/.config/subfinder/provider-config.yaml quando permitido.
 # 9. Valida proprietário, grupo, permissões e formato final.
 #
+# COMO CADASTRAR E UTILIZAR AS CHAVES
+#
+# 1. Execute este módulo uma primeira vez:
+#    sudo ./modules/04-configure-api-keys.sh
+# 2. Abra o arquivo central de chaves executando o utilitário abaixo. Ele é um
+#    comando, não um diretório; portanto, não use "cd edit-api-keys":
+#    ~/.local/bin/edit-api-keys
+# 3. Valide o arquivo sem exibir os valores cadastrados:
+#    ~/.local/bin/check-api-keys
+# 4. Depois de adicionar ou alterar uma chave usada pelo Subfinder, execute este
+#    módulo novamente e confirme a substituição do provider-config.yaml. O módulo
+#    lê o arquivo central e atualiza ~/.config/subfinder/provider-config.yaml.
+# 5. Para ferramentas que aceitam as variáveis previstas por este projeto,
+#    carregue-as somente no terminal atual com:
+#    source ~/.local/bin/export-api-keys
+#
+# ESCOPO DA CONFIGURAÇÃO
+#
+# - O arquivo central de chaves é ~/.config/kali-setup/api-keys.env.
+# - O Subfinder recebe uma configuração nativa gerada por este módulo e utiliza
+#   ~/.config/subfinder/provider-config.yaml automaticamente em seus comandos.
+# - Este módulo não cria configurações nativas para todas as outras ferramentas.
+# - Ferramentas compatíveis com variáveis de ambiente podem usar as chaves após
+#   o carregamento de ~/.local/bin/export-api-keys no terminal atual.
+# - Ferramentas que exigem login, comando de inicialização ou arquivo próprio
+#   ainda precisam ser configuradas conforme sua documentação oficial.
+# - As variáveis não são instaladas globalmente nem carregadas automaticamente
+#   em novos terminais. Essa decisão reduz a exposição desnecessária de secrets.
+#
 # RISCOS CONTROLADOS
 #
 # - Secrets não devem ser exibidos no terminal, logs, histórico ou Git.
