@@ -1,0 +1,9 @@
+# KALI SETUP - FERRAMENTAS PARA AUDITORIA DE CMS
+# Formato: nome|categoria|prioridade|método|pacote-ou-origem|comando-validacao|arquitetura
+cmseek|multi-cms|CORE|apt|cmseek|cmseek --help|Kali rolling; arquitetura all
+wpscan|wordpress|CORE|apt|wpscan|wpscan --version|Kali rolling; arquitetura all
+wpprobe|wordpress|RECOMMENDED|apt|wpprobe|wpprobe --help|Kali rolling; amd64 arm64
+joomscan|joomla|CORE|apt|joomscan|joomscan --version|Kali rolling; arquitetura all
+droopescan|drupal-silverstripe|RECOMMENDED|apt|droopescan|droopescan --help|Quando disponível no repositório da arquitetura
+cmsmap|wordpress-joomla-drupal|OPTIONAL|apt|cmsmap|cmsmap --help|Quando disponível no repositório da arquitetura
+whatweb|fingerprint|RECOMMENDED|apt|whatweb|whatweb --version|Kali rolling; arquitetura all

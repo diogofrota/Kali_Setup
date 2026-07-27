@@ -100,7 +100,7 @@ check_file() {
 main() {
     local arquivo=''
 
-    for arquivo in "$CONFIG_DIR"/06-packages-base.txt "$CONFIG_DIR"/14-packages-network.txt "$CONFIG_DIR"/16-packages-web.txt "$CONFIG_DIR"/17-packages-vulnerability.txt "$CONFIG_DIR"/11-tools-go.txt "$CONFIG_DIR"/10-tools-python.txt "$CONFIG_DIR"/15-tools-git.txt "$CONFIG_DIR"/tools-optional.txt; do
+    for arquivo in "$CONFIG_DIR"/06-packages-base.txt "$CONFIG_DIR"/14-packages-network.txt "$CONFIG_DIR"/16-packages-web.txt "$CONFIG_DIR"/17-packages-vulnerability.txt "$CONFIG_DIR"/31-packages-cms.txt "$CONFIG_DIR"/32-tools-api.txt "$CONFIG_DIR"/33-tools-load-testing.txt "$CONFIG_DIR"/11-tools-go.txt "$CONFIG_DIR"/10-tools-python.txt "$CONFIG_DIR"/15-tools-git.txt "$CONFIG_DIR"/tools-optional.txt; do
         if [[ -f "$arquivo" ]]; then
             check_file "$arquivo"
         fi

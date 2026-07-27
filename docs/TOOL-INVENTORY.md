@@ -33,6 +33,24 @@ Prioridades:
 | censys | Inteligência | pipx | OPTIONAL | Sim | API token | 15/20 | Requer credencial |
 | aquatone | Screenshots | disabled | LEGACY | Não | Não | 15 | Não instalar sem nova validação |
 | crackmapexec | AD | disabled | LEGACY | Não | Não | 19 | Preferir NetExec quando validado |
+| cmseek | CMS/fingerprint | apt | CORE | Não | Não | 31 | Identificação de múltiplos CMS |
+| wpscan | WordPress | apt | CORE | Opcional | token WPScan | 31 | Scanner especializado em WordPress |
+| wpprobe | WordPress | apt | RECOMMENDED | Não | base própria | 31 | Enumeração e correlação de plugins |
+| joomscan | Joomla | apt | CORE | Não | Não | 31 | Scanner especializado em Joomla |
+| droopescan | Drupal/SilverStripe | apt | RECOMMENDED | Não | Não | 31 | Instala quando disponível no APT |
+| cmsmap | WordPress/Joomla/Drupal | apt | OPTIONAL | Não | Não | 31 | Instala quando disponível no APT |
+| whatweb | CMS/fingerprint | apt | RECOMMENDED | Não | Não | 16/31 | Fingerprint complementar |
+| kiterunner | Descoberta de rotas API | build oficial | CORE | Não | cache próprio | 32 | Compilado do repositório oficial; binário `kr` |
+| schemathesis | OpenAPI/GraphQL | pipx | RECOMMENDED | Não | schema da API | 32 | Testes generativos orientados a schema |
+| jwt_tool | JWT | venv/git | RECOMMENDED | Não | config própria | 32 | Ambiente Python isolado e launcher local |
+| grpcurl | gRPC | go | RECOMMENDED | Não | Opcional | 32 | Cliente CLI para serviços gRPC |
+| k6 | Carga/desempenho | repositório oficial | CORE | Não | scripts JavaScript | 33 | Testes de carga, estresse, pico e resistência |
+| jmeter | Carga/desempenho | apt | CORE | Não | planos JMX | 33 | Apache JMeter; requer Java |
+| locust | Carga distribuída | pipx | CORE | Não | locustfile Python | 33 | Cenários programáveis e execução distribuída |
+| wrk | Benchmark HTTP | apt | CORE | Não | scripts Lua opcionais | 33 | Gerador HTTP de alto desempenho |
+| vegeta | Taxa constante | go | RECOMMENDED | Não | targets locais | 33 | Controle de taxa e relatórios |
+| gatling | Cenários de carga | Docker | RECOMMENDED | Não | projeto Gatling | 33 | Imagem oficial e launcher local |
+| slowhttptest | Resiliência HTTP | apt | OPTIONAL | Não | Não | 33 | Potencialmente disruptivo; autorização explícita |
 
 Para visualizar inventário local:
 

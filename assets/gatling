@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+declare -a docker_tty=()
+if [[ -t 0 && -t 1 ]]; then
+    docker_tty=(-it)
+else
+    docker_tty=(-i)
+fi
+
+exec docker run --rm "${docker_tty[@]}" \
+    --volume "${PWD}:/opt/gatling/user-files" \
+    gatling/gatling:latest "$@"

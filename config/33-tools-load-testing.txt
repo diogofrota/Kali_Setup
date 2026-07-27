@@ -1,0 +1,14 @@
+# KALI SETUP - FERRAMENTAS PARA TESTES DE CARGA E DESEMPENHO
+# Formato: nome|categoria|prioridade|método|pacote-ou-origem|comando-validacao|arquitetura
+k6|load-testing|CORE|k6-repository|https://dl.k6.io/deb|k6 version|Linux amd64/arm64; repositório oficial Grafana
+jmeter|load-testing|CORE|apt|jmeter|jmeter --version|Kali rolling; Java
+locust|distributed-load|CORE|pipx|locust|locust -V|Python; arquitetura all
+wrk|http-benchmark|CORE|apt|wrk|wrk --version|Kali rolling; amd64/arm64
+vegeta|constant-rate|RECOMMENDED|go|github.com/tsenart/vegeta@latest|vegeta -version|Linux amd64/arm64; compilada localmente
+gatling|scenario-load|RECOMMENDED|docker-image|gatling/gatling:latest|gatling --help|Imagem Docker oficial; amd64/arm64 conforme upstream
+siege|http-benchmark|RECOMMENDED|apt|siege|siege --version|Kali rolling; amd64/arm64
+apachebench|http-benchmark|RECOMMENDED|apt|apache2-utils|ab -V|Kali rolling; amd64/arm64
+h2load|http2-benchmark|RECOMMENDED|apt|nghttp2-client|h2load --version|Kali rolling; amd64/arm64
+slowhttptest|resilience-testing|OPTIONAL|apt|slowhttptest|slowhttptest -h|Kali rolling; use somente com autorização explícita
+hey|http-benchmark|OPTIONAL|go|github.com/rakyll/hey@latest|hey --help|Linux amd64/arm64; compilada localmente
+bombardier|http-benchmark|OPTIONAL|go|github.com/codesenberg/bombardier@latest|bombardier --version|Linux amd64/arm64; compilada localmente

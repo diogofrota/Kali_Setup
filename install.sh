@@ -121,6 +121,9 @@ readonly MODULES=(
     '28-configure-tool-paths.sh'
     '29-validate-installation.sh'
     '30-update-security-tools.sh'
+    '31-install-cms-tools.sh'
+    '32-install-api-tools.sh'
+    '33-install-load-testing-tools.sh'
 )
 
 PROJECT_ROOT=''
@@ -196,7 +199,7 @@ confirm_sensitive_module() {
     local resposta=''
 
     case "$modulo" in
-        03-*|05-*|06-*|10-*|11-*|12-*|13-*|14-*|15-*|16-*|17-*)
+        03-*|05-*|06-*|10-*|11-*|12-*|13-*|14-*|15-*|16-*|17-*|31-*|32-*|33-*)
             warning "O módulo ${modulo} pode alterar sistema, pacotes, usuários, serviços ou diretórios."
             printf 'Digite EXECUTAR para chamar este módulo: '
             read -r resposta
@@ -279,6 +282,15 @@ main() {
                 recon)
                     run_module '15-install-recon-tools.sh'
                     ;;
+                cms)
+                    run_module '31-install-cms-tools.sh'
+                    ;;
+                api)
+                    run_module '32-install-api-tools.sh'
+                    ;;
+                load)
+                    run_module '33-install-load-testing-tools.sh'
+                    ;;
                 *)
                     error "Categoria não reconhecida: ${2:-}"
                     exit 1
@@ -301,7 +313,7 @@ main() {
             interactive_menu
             ;;
         *)
-            error "Uso: ./install.sh --list | --module 05 | --category recon | --validate | --dry-run --module 15"
+            error "Uso: ./install.sh --list | --module 05 | --category recon|cms|api|load | --validate | --dry-run --module 15"
             exit 1
             ;;
     esac

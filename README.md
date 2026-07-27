@@ -31,6 +31,9 @@ kali-setup/
 │   ├── 14-packages-network.txt
 │   ├── 17-packages-vulnerability.txt
 │   ├── 16-packages-web.txt
+│   ├── 31-packages-cms.txt
+│   ├── 32-tools-api.txt
+│   ├── 33-tools-load-testing.txt
 │   ├── subfinder-provider-config.yaml.example
 │   ├── 15-tools-disabled.txt
 │   ├── 15-tools-git.txt
@@ -92,7 +95,10 @@ kali-setup/
 │   ├── 27-install-lab-environments.sh
 │   ├── 28-configure-tool-paths.sh
 │   ├── 29-validate-installation.sh
-│   └── 30-update-security-tools.sh
+│   ├── 30-update-security-tools.sh
+│   ├── 31-install-cms-tools.sh
+│   ├── 32-install-api-tools.sh
+│   └── 33-install-load-testing-tools.sh
 └── scripts/
     ├── check-all-tools.sh
     ├── check-api-keys.sh
@@ -194,13 +200,34 @@ Ou execute diretamente o módulo desejado:
 sudo ./modules/05-update-system.sh
 ```
 
-O único atalho de categoria existente no momento é `recon`:
+Os atalhos de categoria incluem `recon`, `cms`, `api` e `load`. Para reconhecimento:
 
 ```bash
 sudo ./install.sh --category recon
 ```
 
 Esse comando chama o módulo `15-install-recon-tools.sh`.
+
+Para preparar a estação para pentest de APIs:
+
+```bash
+sudo ./install.sh --category api
+```
+
+O módulo 32 instala apenas ferramentas de API que não pertencem a outros
+módulos: Kiterunner, Schemathesis, JWT Tool e grpcurl. Ferramentas compartilhadas
+como Arjun, Burp Suite, ffuf, Nuclei e sqlmap continuam sob responsabilidade dos
+módulos Web, Python, Go e vulnerabilidades.
+
+Para preparar a estação para testes autorizados de carga e desempenho:
+
+```bash
+sudo ./install.sh --category load
+```
+
+O módulo 33 instala k6, JMeter, Locust, wrk, Vegeta, Gatling, Siege,
+ApacheBench, h2load, SlowHTTPTest, hey e Bombardier. Ele não inicia testes nem
+altera limites do sistema.
 
 ## Fluxo recomendado de primeira instalação
 
@@ -588,6 +615,9 @@ Aliases criados:
 - `httpx`: força o uso de `~/go/bin/httpx` quando o binário do ProjectDiscovery existe.
 - `httpx-pd`: alias explícito para o `httpx` do ProjectDiscovery.
 - `fd`: aponta para `fdfind` somente quando `fdfind` existe e nenhum `fd` real está no `PATH`.
+
+A relação completa entre alias, comando, ferramenta e finalidade está em
+[`docs/ALIASES.md`](docs/ALIASES.md).
 
 O caso do `httpx` merece atenção: em alguns ambientes, `httpx` pode chamar outro programa com o mesmo nome, especialmente relacionado ao ecossistema Python. Para recon, o KALI SETUP espera o `httpx` do ProjectDiscovery. Confira com:
 

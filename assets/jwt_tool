@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+JWT_TOOL_ROOT="${HOME}/.local/share/kali-setup/tools/jwt_tool"
+exec "${JWT_TOOL_ROOT}/.venv/bin/python" "${JWT_TOOL_ROOT}/jwt_tool.py" "$@"
